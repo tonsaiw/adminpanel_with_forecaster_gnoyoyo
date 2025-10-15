@@ -2,7 +2,7 @@ import { useState } from "react";
 import { MachineTable } from "@/components/machines/MachineTable";
 import { MachineModal } from "@/components/machines/MachineModal";
 import { MachinesProvider, useMachines } from "@/hooks/useMachines";
-import type { MachineInput } from "@/schemas/machine.schema";
+import type { Machine, MachineInput } from "@/schemas/machine.schema";
 
 export default function Home() {
   return (
@@ -13,12 +13,28 @@ export default function Home() {
 }
 
 const HomeContent = () => {
-  const { addMachine } = useMachines();
+  const { addMachine, updateMachine } = useMachines();
   const [modalOpen, setModalOpen] = useState(false);
+  const [editingMachine, setEditingMachine] = useState<Machine | null>(null);
 
   const handleSubmit = (machine: MachineInput) => {
-    addMachine(machine);
+    if (editingMachine) {
+      updateMachine(editingMachine.id, machine);
+      setEditingMachine(null);
+    } else {
+      addMachine(machine);
+    }
     setModalOpen(false);
+  };
+
+  const handleAddClick = () => {
+    setEditingMachine(null);
+    setModalOpen(true);
+  };
+
+  const handleEdit = (machine: Machine) => {
+    setEditingMachine(machine);
+    setModalOpen(true);
   };
 
   return (
@@ -39,14 +55,14 @@ const HomeContent = () => {
                 </h2>
                 <button
                   type="button"
-                  onClick={() => setModalOpen(true)}
+                  onClick={handleAddClick}
                   className="inline-flex items-center justify-center rounded-lg bg-slate-900 px-4 py-2 text-sm font-semibold text-white transition hover:bg-slate-700"
                 >
                   + Add
                 </button>
               </div>
               <div className="mt-6">
-                <MachineTable />
+                <MachineTable onEdit={handleEdit} />
               </div>
             </section>
             <section className="overflow-hidden rounded-2xl border border-slate-200 bg-white p-4 shadow-sm sm:p-5 lg:p-6">
@@ -61,6 +77,7 @@ const HomeContent = () => {
         open={modalOpen}
         onClose={() => setModalOpen(false)}
         onSubmit={handleSubmit}
+        initialValues={editingMachine ?? undefined}
       />
     </>
   );

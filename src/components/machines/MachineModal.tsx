@@ -3,16 +3,27 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { MachineInput, machineInputSchema } from "@/schemas/machine.schema";
 
+const emptyMachineForm: MachineInput = {
+  name: "",
+  locationType: "SCHOOL",
+  expectedSalesPerDay: 0,
+  averageProfitMarginPercentage: 0,
+  rentCostPerDay: 0,
+  electricCostPerTempPerDay: 0,
+};
+
 type MachineModalProps = {
   open: boolean;
   onClose: () => void;
   onSubmit: (machine: MachineInput) => void;
+  initialValues?: MachineInput;
 };
 
 export const MachineModal = ({
   open,
   onClose,
   onSubmit,
+  initialValues,
 }: MachineModalProps) => {
   const {
     register,
@@ -21,21 +32,21 @@ export const MachineModal = ({
     reset,
   } = useForm<MachineInput>({
     resolver: zodResolver(machineInputSchema),
-    defaultValues: {
-      name: "",
-      locationType: "SCHOOL",
-      expectedSalesPerDay: 0,
-      averageProfitMarginPercentage: 0,
-      rentCostPerDay: 0,
-      electricCostPerTempPerDay: 0,
-    },
+    defaultValues: emptyMachineForm,
   });
 
   useEffect(() => {
     if (!open) {
-      reset();
+      reset(emptyMachineForm);
+      return;
     }
-  }, [open, reset]);
+
+    if (initialValues) {
+      reset(initialValues);
+    } else {
+      reset(emptyMachineForm);
+    }
+  }, [initialValues, open, reset]);
 
   if (!open) {
     return null;
@@ -56,7 +67,9 @@ export const MachineModal = ({
         <form onSubmit={handleSubmit(handleFormSubmit)} className="p-6">
           <div className="flex items-center justify-between">
             <h3 className="text-lg font-semibold text-slate-900">
-              เพิ่มข้อมูลเครื่องขายสินค้า
+              {initialValues
+                ? "แก้ไขข้อมูลเครื่องขายสินค้า"
+                : "เพิ่มข้อมูลเครื่องขายสินค้า"}
             </h3>
             <button
               type="button"

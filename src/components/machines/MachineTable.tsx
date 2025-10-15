@@ -10,9 +10,10 @@ import { useMachines } from "@/hooks/useMachines";
 
 type ActionCellProps = {
   machine: Machine;
+  onEdit: (machine: Machine) => void;
 };
 
-const ActionCell = ({ machine }: ActionCellProps) => {
+const ActionCell = ({ machine, onEdit }: ActionCellProps) => {
   const [open, setOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement | null>(null);
 
@@ -39,7 +40,7 @@ const ActionCell = ({ machine }: ActionCellProps) => {
 
   const handleEdit = () => {
     setOpen(false);
-    console.log("Edit machine", machine);
+    onEdit(machine);
   };
 
   const handleDelete = () => {
@@ -90,7 +91,11 @@ const ActionCell = ({ machine }: ActionCellProps) => {
   );
 };
 
-export const MachineTable = () => {
+type MachineTableProps = {
+  onEdit: (machine: Machine) => void;
+};
+
+export const MachineTable = ({ onEdit }: MachineTableProps) => {
   const { machines } = useMachines();
 
   const columns = useMemo<ColumnDef<Machine>[]>(() => {
@@ -141,10 +146,12 @@ export const MachineTable = () => {
         id: "actions",
         header: "Actions",
         size: 120,
-        cell: ({ row }) => <ActionCell machine={row.original} />,
+        cell: ({ row }) => (
+          <ActionCell machine={row.original} onEdit={onEdit} />
+        ),
       },
     ];
-  }, []);
+  }, [onEdit]);
 
   const table = useReactTable({
     data: machines,

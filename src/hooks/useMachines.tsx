@@ -39,6 +39,7 @@ const seedMachines: Machine[] = [
 type MachinesContextValue = {
   machines: Machine[];
   addMachine: (input: MachineInput) => void;
+  updateMachine: (id: string, input: MachineInput) => void;
   removeMachine: (id: string) => void;
 };
 
@@ -95,10 +96,19 @@ export const MachinesProvider = ({ children }: { children: ReactNode }) => {
     setMachines((prev) => prev.filter((machine) => machine.id !== id));
   };
 
+  const updateMachine = (id: string, input: MachineInput) => {
+    setMachines((prev) =>
+      prev.map((machine) =>
+        machine.id === id ? { ...machine, ...input } : machine
+      )
+    );
+  };
+
   const value = useMemo(
     () => ({
       machines,
       addMachine,
+      updateMachine,
       removeMachine,
     }),
     [machines]
