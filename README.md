@@ -1,40 +1,27 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/pages/api-reference/create-next-app).
+## TAO BIN Forecaster Dashboard
 
-## Getting Started
+This project bootstraps a Next.js (Pages Router) frontend that will simulate TAO BIN vending machine operations and forecast profit or loss using Bangkok weather data. The stack includes TypeScript, TailwindCSS, React Query, and Zod to emphasize clean architecture and maintainability.
 
-First, run the development server:
+### Getting Started
+
+Install dependencies and launch the development server:
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open http://localhost:3000 to view the scaffolded dashboard shell.
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+### Folder Overview
 
-[API routes](https://nextjs.org/docs/pages/building-your-application/routing/api-routes) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+- `src/pages/` – Routing entry points; `_app.tsx` wires the React Query provider and `index.tsx` hosts the combined admin and forecast dashboard.
+- `src/components/` – Presentational building blocks split into `machines/` (CRUD UI) and `dashboard/` (forecast visualizations).
+- `src/hooks/` – Reusable React hooks for orchestrating state and data fetching, e.g., `useMachines` and `useWeather`.
+- `src/lib/` – Domain-specific utilities for persistence, forecasting, and weather API integration.
+- `src/schemas/` – Zod validation schemas to guard form inputs and domain contracts.
+- `src/types/` – Shared TypeScript types for machines, weather, and forecast results.
+- `src/utils/` – Small, framework-agnostic helpers such as number formatting.
+- `src/styles/` – Global TailwindCSS configuration and styles.
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/pages/building-your-application/routing/api-routes) instead of React pages.
-
-This project uses [`next/font`](https://nextjs.org/docs/pages/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn-pages-router) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/pages/building-your-application/deploying) for more details.
+Future steps will flesh out business logic, UI components, and automated tests to deliver the complete TAO BIN Forecaster Dashboard experience.

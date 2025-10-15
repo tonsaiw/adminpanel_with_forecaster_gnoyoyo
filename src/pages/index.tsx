@@ -7,15 +7,19 @@ import { useMachines } from "@/hooks/useMachines";
 import type { Machine, MachineInput } from "@/schemas/machine.schema";
 import { useForecastData } from "@/hooks/useForecastData";
 import { ForecastChart } from "@/components/dashboard/ForecastChart";
+import { WeeklySummaryCard } from "@/components/dashboard/WeeklySummaryCard";
 
 const ForecastPanel = ({ machines }: { machines: Machine[] }) => {
   const { forecast, isLoading, isError } = useForecastData(machines);
+  const daily = forecast?.daily ?? [];
+  const weekly = forecast?.weekly ?? null;
+  const loading = isLoading && !isError;
+
   return (
-    <ForecastChart
-      data={forecast ?? []}
-      isLoading={isLoading}
-      isError={isError}
-    />
+    <div className="space-y-4">
+      <ForecastChart data={daily} isLoading={isLoading} isError={isError} />
+      <WeeklySummaryCard summary={weekly} isLoading={loading} />
+    </div>
   );
 };
 
