@@ -1,13 +1,12 @@
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Machine } from "@/types/machine";
-import { MachineFormInput, machineSchema } from "@/schemas/machine.schema";
+import { MachineInput, machineInputSchema } from "@/schemas/machine.schema";
 
 type MachineModalProps = {
   open: boolean;
   onClose: () => void;
-  onSubmit: (machine: Machine) => void;
+  onSubmit: (machine: MachineInput) => void;
 };
 
 export const MachineModal = ({
@@ -20,10 +19,9 @@ export const MachineModal = ({
     handleSubmit,
     formState: { errors, isSubmitting },
     reset,
-  } = useForm<MachineFormInput>({
-    resolver: zodResolver(machineSchema),
+  } = useForm<MachineInput>({
+    resolver: zodResolver(machineInputSchema),
     defaultValues: {
-      id: "",
       name: "",
       locationType: "SCHOOL",
       expectedSalesPerDay: 0,
@@ -43,16 +41,8 @@ export const MachineModal = ({
     return null;
   }
 
-  const handleFormSubmit = (data: MachineFormInput) => {
-    onSubmit({
-      id: data.id,
-      name: data.name,
-      locationType: data.locationType,
-      expectedSalesPerDay: data.expectedSalesPerDay,
-      averageProfitMarginPercentage: data.averageProfitMarginPercentage,
-      rentCostPerDay: data.rentCostPerDay,
-      electricCostPerTempPerDay: data.electricCostPerTempPerDay,
-    });
+  const handleFormSubmit = (data: MachineInput) => {
+    onSubmit(data);
     onClose();
   };
 
@@ -77,21 +67,6 @@ export const MachineModal = ({
             </button>
           </div>
           <div className="mt-6 grid grid-cols-1 gap-5 sm:grid-cols-2">
-            {/* <div>
-              <label className="block text-sm font-medium text-slate-700">
-                ID
-              </label>
-              <input
-                type="text"
-                {...register("id")}
-                className="mt-2 w-full rounded-lg border border-slate-200 px-3 py-2 text-sm text-slate-900 focus:border-slate-400 focus:outline-none focus:ring-2 focus:ring-slate-200"
-              />
-              {errors.id ? (
-                <p className="mt-1 text-xs text-rose-600">
-                  {errors.id.message}
-                </p>
-              ) : null}
-            </div> */}
             <div>
               <label className="block text-sm font-medium text-slate-700">
                 Name

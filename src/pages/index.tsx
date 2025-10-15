@@ -2,17 +2,21 @@ import { useState } from "react";
 import { MachineTable } from "@/components/machines/MachineTable";
 import { MachineModal } from "@/components/machines/MachineModal";
 import { MachinesProvider, useMachines } from "@/hooks/useMachines";
-import { Machine } from "@/types/machine";
+import type { MachineInput } from "@/schemas/machine.schema";
 
 export default function Home() {
-  return <HomeContent />;
+  return (
+    <MachinesProvider>
+      <HomeContent />
+    </MachinesProvider>
+  );
 }
 
 const HomeContent = () => {
   const { addMachine } = useMachines();
   const [modalOpen, setModalOpen] = useState(false);
 
-  const handleSubmit = (machine: Machine) => {
+  const handleSubmit = (machine: MachineInput) => {
     addMachine(machine);
     setModalOpen(false);
   };
