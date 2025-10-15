@@ -8,6 +8,7 @@ import {
   CartesianGrid,
   ResponsiveContainer,
 } from "recharts";
+import Skeleton from "react-loading-skeleton";
 import { formatTHB } from "@/utils/number";
 
 export function ForecastChart({
@@ -19,9 +20,32 @@ export function ForecastChart({
   isLoading: boolean;
   isError: boolean;
 }) {
-  if (isLoading) return <p>Loading forecast...</p>;
-  if (isError) return <p>Error loading forecast data.</p>;
-  if (!data?.length) return <p>No forecast data.</p>;
+  if (isError) {
+    return (
+      <div className="rounded-xl border bg-white p-6 text-center text-sm text-red-600 shadow-sm">
+        ❌ Error loading forecast data
+      </div>
+    );
+  }
+
+  if (isLoading) {
+    return (
+      <div className="rounded-xl border bg-white p-6 shadow-sm">
+        <h3 className="mb-4 text-sm font-medium text-gray-500">
+          📈 7-DAY FORECAST
+        </h3>
+        <Skeleton height={280} borderRadius="0.75rem" />
+      </div>
+    );
+  }
+
+  if (!data?.length) {
+    return (
+      <div className="rounded-xl border bg-white p-6 text-center text-sm text-gray-500 shadow-sm">
+        No forecast data available.
+      </div>
+    );
+  }
 
   return (
     <div className="rounded-xl border bg-white p-6 shadow-sm">
