@@ -48,7 +48,7 @@ const ActionCell = ({ machine }: ActionCellProps) => {
   };
 
   return (
-    <div ref={menuRef} className="relative flex justify-end">
+    <div ref={menuRef} className="relative flex min-w-[64px] justify-end">
       <button
         type="button"
         onClick={() => setOpen((prev) => !prev)}
@@ -98,41 +98,49 @@ export const MachineTable = () => {
       {
         header: "ID",
         accessorKey: "id",
+        size: 120,
         cell: (info) => info.getValue<string>(),
       },
       {
         header: "Name",
         accessorKey: "name",
+        size: 200,
         cell: (info) => info.getValue<string>(),
       },
       {
         header: "Location Type",
         accessorKey: "locationType",
+        size: 160,
         cell: (info) => info.getValue<string>(),
       },
       {
         header: "Expected Sales / Day",
         accessorKey: "expectedSalesPerDay",
+        size: 170,
         cell: (info) => info.getValue<number>(),
       },
       {
         header: "Avg Profit Margin",
         accessorKey: "averageProfitMarginPercentage",
+        size: 170,
         cell: (info) => `${(info.getValue<number>() * 100).toFixed(0)}%`,
       },
       {
         header: "rentCostPerDay (Baht)",
         accessorKey: "rentCostPerDay",
+        size: 180,
         cell: (info) => info.getValue<number>(),
       },
       {
         header: "electricCostPerTempPerDay (Baht per °C per day)",
         accessorKey: "electricCostPerTempPerDay",
+        size: 220,
         cell: (info) => info.getValue<number>(),
       },
       {
         id: "actions",
         header: "Actions",
+        size: 120,
         cell: ({ row }) => <ActionCell machine={row.original} />,
       },
     ];
@@ -154,19 +162,20 @@ export const MachineTable = () => {
 
   return (
     <div className="rounded-xl border border-slate-200 bg-white shadow-sm">
-      <div className="overflow-x-auto">
-        <table className="min-w-[720px] w-full divide-y divide-slate-200">
+      <div className="w-full overflow-x-auto">
+        <table className="w-full min-w-[720px] divide-y divide-slate-200 lg:min-w-full">
           <thead className="bg-slate-50">
             {table.getHeaderGroups().map((headerGroup) => (
               <tr key={headerGroup.id}>
                 {headerGroup.headers.map((header) => (
                   <th
                     key={header.id}
-                    className={`px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-slate-500 ${
+                    className={`whitespace-nowrap px-4 py-3 text-left text-[11px] font-semibold uppercase tracking-wide text-slate-500 ${
                       header.column.id === "actions"
-                        ? "sticky right-0 z-10 bg-slate-50 pl-6 pr-4"
-                        : ""
+                        ? "sticky right-0 z-10 bg-slate-50 pl-6 pr-4 shadow-[inset_-8px_0_8px_-8px_rgba(15,23,42,0.12)]"
+                        : "bg-slate-50"
                     }`}
+                    style={{ width: header.getSize() }}
                   >
                     {header.isPlaceholder
                       ? null
@@ -185,11 +194,12 @@ export const MachineTable = () => {
                 {row.getVisibleCells().map((cell) => (
                   <td
                     key={cell.id}
-                    className={`px-4 py-3 text-sm text-slate-700 ${
+                    className={`whitespace-nowrap px-4 py-3 text-sm text-slate-700 ${
                       cell.column.id === "actions"
-                        ? "sticky right-0 bg-white pl-6 pr-4"
-                        : ""
+                        ? "sticky right-0 bg-white pl-6 pr-4 text-right shadow-[inset_-8px_0_8px_-8px_rgba(15,23,42,0.08)] whitespace-nowrap"
+                        : "align-top bg-white"
                     }`}
+                    style={{ width: cell.column.getSize() }}
                   >
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                   </td>

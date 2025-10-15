@@ -11,7 +11,7 @@ export default function Home() {
           <p className="mt-2 text-slate-600">TAO BIN Forecaster Dashboard</p>
         </header>
         <div className="grid flex-1 gap-6 lg:grid-cols-2">
-          <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+          <section className="overflow-hidden rounded-2xl border border-slate-200 bg-white p-4 shadow-sm sm:p-5 lg:p-6">
             <h2 className="text-xl font-semibold text-slate-900">
               Admin Panel
             </h2>
@@ -20,7 +20,7 @@ export default function Home() {
               <MachineTable />
             </div>
           </section>
-          <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+          <section className="overflow-hidden rounded-2xl border border-slate-200 bg-white p-4 shadow-sm sm:p-5 lg:p-6">
             <h2 className="text-xl font-semibold text-slate-900">
               Forecast Dashboard
             </h2>
