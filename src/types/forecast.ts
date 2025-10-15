@@ -1,15 +1,7 @@
-export type DailyWeather = {
-  date: string;
-  min: number;
-  max: number;
-  avg: number;
-};
-
 export type DailyForecast = {
   date: string;
+  avgTemp: number;
   electricityCost: number;
-  revenue: number;
-  rent: number;
   profitOrLoss: number;
 };
 
@@ -18,4 +10,6 @@ export type WeeklySummary = {
   totalRent: number;
   totalElectricity: number;
   netProfitOrLoss: number;
+  avgTemp?: number;
+  profitMargin?: number;
 };
