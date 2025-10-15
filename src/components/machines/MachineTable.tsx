@@ -168,25 +168,50 @@ export const MachineTable = ({ onEdit, onDelete }: MachineTableProps) => {
         cell: (info) => info.getValue<string>(),
       },
       {
-        header: "Expected Sales / Day",
+        header: "Expected Sales",
         accessorKey: "expectedSalesPerDay",
         size: 170,
-        cell: (info) => info.getValue<number>(),
+        cell: (info) => {
+          const value = info.getValue<number>();
+          return (
+            <div className="flex items-baseline gap-1">
+              <span className="text-xs font-medium text-slate-400">฿</span>
+              <span className="font-semibold text-slate-800">
+                {value.toLocaleString()}
+              </span>
+            </div>
+          );
+        },
       },
       {
         header: "Avg Profit Margin",
         accessorKey: "averageProfitMarginPercentage",
         size: 170,
-        cell: (info) => `${(info.getValue<number>() * 100).toFixed(0)}%`,
+        cell: (info) => {
+          const percent = (info.getValue<number>() * 100).toFixed(0);
+          return (
+            <span className="font-semibold text-emerald-600">{percent}%</span>
+          );
+        },
       },
       {
         header: "rentCostPerDay (Baht)",
         accessorKey: "rentCostPerDay",
         size: 180,
-        cell: (info) => info.getValue<number>(),
+        cell: (info) => {
+          const value = info.getValue<number>();
+          return (
+            <div className="flex items-baseline gap-1">
+              <span className="text-xs font-medium text-slate-400">฿</span>
+              <span className="font-semibold text-slate-800">
+                {value.toLocaleString()}
+              </span>
+            </div>
+          );
+        },
       },
       {
-        header: "electricCost (Baht per °C per day)",
+        header: "electricCost (Baht per °C)",
         accessorKey: "electricCostPerTempPerDay",
         size: 220,
         cell: (info) => info.getValue<number>(),
