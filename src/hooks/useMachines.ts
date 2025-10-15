@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { createContext, useContext, useMemo, useState } from "react";
+import type { ReactNode } from "react";
 import { Machine } from "@/types/machine";
 
 const seedMachines: Machine[] = [
@@ -31,10 +32,46 @@ const seedMachines: Machine[] = [
   },
 ];
 
-export const useMachines = () => {
-  const [machines] = useState<Machine[]>(seedMachines);
+type MachinesContextValue = {
+  machines: Machine[];
+  addMachine: (machine: Machine) => void;
+};
 
-  return {
-    machines,
+const MachinesContext = createContext<MachinesContextValue | undefined>(
+  undefined
+);
+
+export const MachinesProvider = ({ children }: { children: ReactNode }) => {
+  const [machines, setMachines] = useState<Machine[]>(seedMachines);
+
+  const addMachine = (machine: Machine) => {
+    setMachines((prev) => [...prev, machine]);
   };
+
+  const value = useMemo(
+    () => ({
+      machines,
+      addMachine,
+    }),
+    [machines]
+  );
+
+  return { children };
+};
+
+export const useMachines = () => {
+  const context = useContext(MachinesContext);
+
+  if (!context) {
+    return {
+      machines: seedMachines,
+      addMachine: () => {
+        console.warn(
+          "useMachines: MachinesProvider is not mounted; addMachine is disabled."
+        );
+      },
+    };
+  }
+
+  return context;
 };
