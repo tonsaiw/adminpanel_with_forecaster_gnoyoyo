@@ -1,4 +1,5 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import {
   ColumnDef,
   flexRender,
@@ -14,30 +15,66 @@ type ActionCellProps = {
   onDelete: (machine: Machine) => void;
 };
 
+const MENU_WIDTH_PX = 144;
+const MENU_OFFSET_Y = 8;
+
 const ActionCell = ({ machine, onEdit, onDelete }: ActionCellProps) => {
   const [open, setOpen] = useState(false);
-  const menuRef = useRef<HTMLDivElement | null>(null);
+  const anchorRef = useRef<HTMLDivElement | null>(null);
+  const menuContentRef = useRef<HTMLDivElement | null>(null);
+  const [menuPosition, setMenuPosition] = useState<{
+    top: number;
+    left: number;
+  } | null>(null);
+
+  const updateMenuPosition = useCallback(() => {
+    if (!anchorRef.current) return;
+    const rect = anchorRef.current.getBoundingClientRect();
+    const left = rect.right + window.scrollX - MENU_WIDTH_PX;
+    setMenuPosition({
+      top: rect.bottom + window.scrollY + MENU_OFFSET_Y,
+      left: Math.max(16, left),
+    });
+  }, []);
 
   useEffect(() => {
     if (!open) {
+      setMenuPosition(null);
       return;
     }
 
+    updateMenuPosition();
+
     const handleClickOutside = (event: MouseEvent) => {
+      const target = event.target;
+      if (!(target instanceof Node)) return;
       if (
-        menuRef.current &&
-        event.target instanceof Node &&
-        !menuRef.current.contains(event.target)
+        (anchorRef.current && anchorRef.current.contains(target)) ||
+        (menuContentRef.current && menuContentRef.current.contains(target))
       ) {
-        setOpen(false);
+        return;
       }
+      setOpen(false);
+    };
+
+    const handleResize = () => {
+      updateMenuPosition();
+    };
+
+    const handleScroll = () => {
+      updateMenuPosition();
     };
 
     document.addEventListener("mousedown", handleClickOutside);
+    window.addEventListener("resize", handleResize);
+    window.addEventListener("scroll", handleScroll, true);
+
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
+      window.removeEventListener("resize", handleResize);
+      window.removeEventListener("scroll", handleScroll, true);
     };
-  }, [open]);
+  }, [open, updateMenuPosition]);
 
   const handleEdit = () => {
     setOpen(false);
@@ -50,7 +87,7 @@ const ActionCell = ({ machine, onEdit, onDelete }: ActionCellProps) => {
   };
 
   return (
-    <div ref={menuRef} className="relative flex min-w-[64px] justify-end">
+    <div ref={anchorRef} className="flex min-w-[64px] justify-end">
       <button
         type="button"
         onClick={() => setOpen((prev) => !prev)}
@@ -70,24 +107,34 @@ const ActionCell = ({ machine, onEdit, onDelete }: ActionCellProps) => {
           <circle cx="19" cy="12" r="2" />
         </svg>
       </button>
-      {open ? (
-        <div className="absolute right-0 top-9 z-10 w-36 overflow-hidden rounded-md border border-slate-200 bg-white shadow-lg">
-          <button
-            type="button"
-            onClick={handleEdit}
-            className="flex w-full items-center gap-2 px-3 py-2 text-left text-sm text-slate-600 transition hover:bg-slate-50 hover:text-slate-900"
-          >
-            Edit
-          </button>
-          <button
-            type="button"
-            onClick={handleDelete}
-            className="flex w-full items-center gap-2 px-3 py-2 text-left text-sm text-rose-600 transition hover:bg-rose-50 hover:text-rose-700"
-          >
-            Delete
-          </button>
-        </div>
-      ) : null}
+      {open && menuPosition
+        ? createPortal(
+            <div
+              ref={menuContentRef}
+              className="fixed z-[60] w-36 overflow-hidden rounded-md border border-slate-200 bg-white shadow-lg"
+              style={{
+                top: menuPosition.top,
+                left: menuPosition.left,
+              }}
+            >
+              <button
+                type="button"
+                onClick={handleEdit}
+                className="flex w-full items-center gap-2 px-3 py-2 text-left text-sm text-slate-600 transition hover:bg-slate-50 hover:text-slate-900"
+              >
+                Edit
+              </button>
+              <button
+                type="button"
+                onClick={handleDelete}
+                className="flex w-full items-center gap-2 px-3 py-2 text-left text-sm text-rose-600 transition hover:bg-rose-50 hover:text-rose-700"
+              >
+                Delete
+              </button>
+            </div>,
+            document.body
+          )
+        : null}
     </div>
   );
 };
@@ -175,8 +222,8 @@ export const MachineTable = ({ onEdit, onDelete }: MachineTableProps) => {
 
   return (
     <div className="rounded-xl border border-slate-200 bg-white shadow-sm">
-      <div className="w-full overflow-x-auto">
-        <table className="w-full min-w-[720px] divide-y divide-slate-200 lg:min-w-full">
+      <div className=" w-full overflow-x-auto">
+        <table className=" w-full min-w-[720px] divide-y divide-slate-200 lg:min-w-full">
           <thead className="bg-slate-50">
             {table.getHeaderGroups().map((headerGroup) => (
               <tr key={headerGroup.id}>
@@ -203,13 +250,13 @@ export const MachineTable = ({ onEdit, onDelete }: MachineTableProps) => {
           </thead>
           <tbody className="divide-y divide-slate-200">
             {table.getRowModel().rows.map((row) => (
-              <tr key={row.id} className="hover:bg-slate-50">
+              <tr key={row.id} className=" hover:bg-slate-50">
                 {row.getVisibleCells().map((cell) => (
                   <td
                     key={cell.id}
                     className={`whitespace-nowrap px-4 py-3 text-sm text-slate-700 ${
                       cell.column.id === "actions"
-                        ? "sticky right-0 bg-white pl-6 pr-4 text-right shadow-[inset_-8px_0_8px_-8px_rgba(15,23,42,0.08)] whitespace-nowrap"
+                        ? "sticky right-0 z-20 bg-white pl-6 pr-4 text-right shadow-[inset_-8px_0_8px_-8px_rgba(15,23,42,0.08)] whitespace-nowrap"
                         : "align-top bg-white"
                     }`}
                     style={{ width: cell.column.getSize() }}
