@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import {
   ColumnDef,
   flexRender,
@@ -7,6 +7,88 @@ import {
 } from "@tanstack/react-table";
 import { Machine } from "@/types/machine";
 import { useMachines } from "@/hooks/useMachines";
+
+type ActionCellProps = {
+  machine: Machine;
+};
+
+const ActionCell = ({ machine }: ActionCellProps) => {
+  const [open, setOpen] = useState(false);
+  const menuRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    if (!open) {
+      return;
+    }
+
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        menuRef.current &&
+        event.target instanceof Node &&
+        !menuRef.current.contains(event.target)
+      ) {
+        setOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [open]);
+
+  const handleEdit = () => {
+    setOpen(false);
+    console.log("Edit machine", machine);
+  };
+
+  const handleDelete = () => {
+    setOpen(false);
+    console.log("Delete machine", machine);
+  };
+
+  return (
+    <div ref={menuRef} className="relative flex justify-end">
+      <button
+        type="button"
+        onClick={() => setOpen((prev) => !prev)}
+        className="inline-flex h-8 w-8 items-center justify-center rounded-full text-slate-500 transition hover:bg-slate-100 hover:text-slate-700"
+        aria-haspopup="menu"
+        aria-expanded={open}
+      >
+        <span className="sr-only">Open actions</span>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="currentColor"
+          className="h-4 w-4"
+        >
+          <circle cx="5" cy="12" r="2" />
+          <circle cx="12" cy="12" r="2" />
+          <circle cx="19" cy="12" r="2" />
+        </svg>
+      </button>
+      {open ? (
+        <div className="absolute right-0 top-9 z-10 w-36 overflow-hidden rounded-md border border-slate-200 bg-white shadow-lg">
+          <button
+            type="button"
+            onClick={handleEdit}
+            className="flex w-full items-center gap-2 px-3 py-2 text-left text-sm text-slate-600 transition hover:bg-slate-50 hover:text-slate-900"
+          >
+            Edit
+          </button>
+          <button
+            type="button"
+            onClick={handleDelete}
+            className="flex w-full items-center gap-2 px-3 py-2 text-left text-sm text-rose-600 transition hover:bg-rose-50 hover:text-rose-700"
+          >
+            Delete
+          </button>
+        </div>
+      ) : null}
+    </div>
+  );
+};
 
 export const MachineTable = () => {
   const { machines } = useMachines();
@@ -48,6 +130,11 @@ export const MachineTable = () => {
         accessorKey: "electricCostPerTempPerDay",
         cell: (info) => info.getValue<number>(),
       },
+      {
+        id: "actions",
+        header: "Actions",
+        cell: ({ row }) => <ActionCell machine={row.original} />,
+      },
     ];
   }, []);
 
@@ -75,7 +162,11 @@ export const MachineTable = () => {
                 {headerGroup.headers.map((header) => (
                   <th
                     key={header.id}
-                    className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-slate-500"
+                    className={`px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-slate-500 ${
+                      header.column.id === "actions"
+                        ? "sticky right-0 z-10 bg-slate-50 pl-6 pr-4"
+                        : ""
+                    }`}
                   >
                     {header.isPlaceholder
                       ? null
@@ -94,7 +185,11 @@ export const MachineTable = () => {
                 {row.getVisibleCells().map((cell) => (
                   <td
                     key={cell.id}
-                    className="px-4 py-3 text-sm text-slate-700"
+                    className={`px-4 py-3 text-sm text-slate-700 ${
+                      cell.column.id === "actions"
+                        ? "sticky right-0 bg-white pl-6 pr-4"
+                        : ""
+                    }`}
                   >
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                   </td>
