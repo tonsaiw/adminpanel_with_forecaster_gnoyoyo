@@ -3,18 +3,23 @@ import { MachineTable } from "@/components/machines/MachineTable";
 import { MachineModal } from "@/components/machines/MachineModal";
 import { MachineDeleteConfirmModal } from "@/components/machines/MachineDeleteConfirmModal";
 import { BestLocationCard } from "@/components/dashboard/BestLocationCard";
-import { MachinesProvider, useMachines } from "@/hooks/useMachines";
+import { useMachines } from "@/hooks/useMachines";
 import type { Machine, MachineInput } from "@/schemas/machine.schema";
+import { useForecastData } from "@/hooks/useForecastData";
+import { ForecastChart } from "@/components/dashboard/ForecastChart";
+
+const ForecastPanel = ({ machines }: { machines: Machine[] }) => {
+  const { forecast, isLoading, isError } = useForecastData(machines);
+  return (
+    <ForecastChart
+      data={forecast ?? []}
+      isLoading={isLoading}
+      isError={isError}
+    />
+  );
+};
 
 export default function Home() {
-  return (
-    <MachinesProvider>
-      <HomeContent />
-    </MachinesProvider>
-  );
-}
-
-const HomeContent = () => {
   const { machines, addMachine, updateMachine, removeMachine } = useMachines();
   const [modalOpen, setModalOpen] = useState(false);
   const [editingMachine, setEditingMachine] = useState<Machine | null>(null);
@@ -88,6 +93,7 @@ const HomeContent = () => {
             </section>
             <section className="space-y-4">
               <BestLocationCard />
+              <ForecastPanel machines={machines} />
             </section>
           </div>
         </div>
@@ -106,4 +112,4 @@ const HomeContent = () => {
       />
     </>
   );
-};
+}
