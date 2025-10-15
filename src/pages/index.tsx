@@ -13,9 +13,10 @@ export default function Home() {
 }
 
 const HomeContent = () => {
-  const { addMachine, updateMachine } = useMachines();
+  const { addMachine, updateMachine, removeMachine } = useMachines();
   const [modalOpen, setModalOpen] = useState(false);
   const [editingMachine, setEditingMachine] = useState<Machine | null>(null);
+  const [deleteTarget, setDeleteTarget] = useState<Machine | null>(null);
 
   const handleSubmit = (machine: MachineInput) => {
     if (editingMachine) {
@@ -35,6 +36,21 @@ const HomeContent = () => {
   const handleEdit = (machine: Machine) => {
     setEditingMachine(machine);
     setModalOpen(true);
+  };
+
+  const handleDeleteRequest = (machine: Machine) => {
+    setDeleteTarget(machine);
+  };
+
+  const handleDeleteCancel = () => {
+    setDeleteTarget(null);
+  };
+
+  const handleDeleteConfirm = () => {
+    if (deleteTarget) {
+      removeMachine(deleteTarget.id);
+      setDeleteTarget(null);
+    }
   };
 
   return (
@@ -62,7 +78,10 @@ const HomeContent = () => {
                 </button>
               </div>
               <div className="mt-6">
-                <MachineTable onEdit={handleEdit} />
+                <MachineTable
+                  onEdit={handleEdit}
+                  onDelete={handleDeleteRequest}
+                />
               </div>
             </section>
             <section className="overflow-hidden rounded-2xl border border-slate-200 bg-white p-4 shadow-sm sm:p-5 lg:p-6">
@@ -79,6 +98,68 @@ const HomeContent = () => {
         onSubmit={handleSubmit}
         initialValues={editingMachine ?? undefined}
       />
+      <ConfirmDeleteModal
+        open={Boolean(deleteTarget)}
+        machineId={deleteTarget?.id ?? ""}
+        onCancel={handleDeleteCancel}
+        onConfirm={handleDeleteConfirm}
+      />
     </>
+  );
+};
+
+type ConfirmDeleteModalProps = {
+  open: boolean;
+  machineId: string;
+  onCancel: () => void;
+  onConfirm: () => void;
+};
+
+const ConfirmDeleteModal = ({
+  open,
+  machineId,
+  onCancel,
+  onConfirm,
+}: ConfirmDeleteModalProps) => {
+  if (!open) {
+    return null;
+  }
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 p-4">
+      <div className="w-full max-w-md rounded-2xl bg-white p-6 shadow-2xl">
+        <div className="flex items-center justify-between">
+          <h3 className="text-lg font-semibold text-slate-900">
+            Confirm Delete
+          </h3>
+          <button
+            type="button"
+            onClick={onCancel}
+            className="inline-flex h-9 w-9 items-center justify-center rounded-full text-slate-500 transition hover:bg-slate-100 hover:text-slate-900"
+          >
+            ✕
+          </button>
+        </div>
+        <p className="mt-4 text-sm text-slate-600">
+          Are you sure you want to delete match {machineId}?
+        </p>
+        <div className="mt-6 flex justify-end gap-3">
+          <button
+            type="button"
+            onClick={onCancel}
+            className="inline-flex items-center justify-center rounded-lg border border-slate-200 px-4 py-2 text-sm font-medium text-slate-600 transition hover:bg-slate-100"
+          >
+            Cancel
+          </button>
+          <button
+            type="button"
+            onClick={onConfirm}
+            className="inline-flex items-center justify-center rounded-lg bg-slate-900 px-4 py-2 text-sm font-semibold text-white transition hover:bg-slate-700"
+          >
+            Save
+          </button>
+        </div>
+      </div>
+    </div>
   );
 };

@@ -11,9 +11,10 @@ import { useMachines } from "@/hooks/useMachines";
 type ActionCellProps = {
   machine: Machine;
   onEdit: (machine: Machine) => void;
+  onDelete: (machine: Machine) => void;
 };
 
-const ActionCell = ({ machine, onEdit }: ActionCellProps) => {
+const ActionCell = ({ machine, onEdit, onDelete }: ActionCellProps) => {
   const [open, setOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement | null>(null);
 
@@ -45,7 +46,7 @@ const ActionCell = ({ machine, onEdit }: ActionCellProps) => {
 
   const handleDelete = () => {
     setOpen(false);
-    console.log("Delete machine", machine);
+    onDelete(machine);
   };
 
   return (
@@ -93,9 +94,10 @@ const ActionCell = ({ machine, onEdit }: ActionCellProps) => {
 
 type MachineTableProps = {
   onEdit: (machine: Machine) => void;
+  onDelete: (machine: Machine) => void;
 };
 
-export const MachineTable = ({ onEdit }: MachineTableProps) => {
+export const MachineTable = ({ onEdit, onDelete }: MachineTableProps) => {
   const { machines } = useMachines();
 
   const columns = useMemo<ColumnDef<Machine>[]>(() => {
@@ -147,11 +149,15 @@ export const MachineTable = ({ onEdit }: MachineTableProps) => {
         header: "Actions",
         size: 120,
         cell: ({ row }) => (
-          <ActionCell machine={row.original} onEdit={onEdit} />
+          <ActionCell
+            machine={row.original}
+            onEdit={onEdit}
+            onDelete={onDelete}
+          />
         ),
       },
     ];
-  }, [onEdit]);
+  }, [onDelete, onEdit]);
 
   const table = useReactTable({
     data: machines,
