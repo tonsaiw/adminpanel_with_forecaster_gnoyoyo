@@ -11,13 +11,12 @@ export function buildDailyForecast(
   }
 
   const totalRevenuePerDay = machines.reduce(
-    (sum, machine) =>
-      sum + machine.expectedSalesPerDay * machine.averageProfitMarginPercentage,
+    (sum, m) => sum + m.expectedSalesPerDay * m.averageProfitMarginPercentage,
     0
   );
 
   const totalRentPerDay = machines.reduce(
-    (sum, machine) => sum + machine.rentCostPerDay,
+    (sum, m) => sum + m.rentCostPerDay,
     0
   );
 
@@ -25,17 +24,18 @@ export function buildDailyForecast(
     const avgTemp = (day.max + day.min) / 2;
 
     const totalElectricity = machines.reduce(
-      (sum, machine) => sum + machine.electricCostPerTempPerDay * avgTemp,
+      (sum, m) => sum + m.electricCostPerTempPerDay * avgTemp,
       0
     );
 
-    const profitOrLoss = totalRevenuePerDay - totalRentPerDay - totalElectricity;
+    const profitOrLoss =
+      totalRevenuePerDay - totalRentPerDay - totalElectricity;
 
     return {
       date: day.date,
-      avgTemp,
-      electricityCost: totalElectricity,
-      profitOrLoss,
+      avgTemp: Number(avgTemp.toFixed(2)),
+      electricityCost: Number(totalElectricity.toFixed(2)),
+      profitOrLoss: Number(profitOrLoss.toFixed(2)),
     };
   });
 }
@@ -58,38 +58,36 @@ export function calculateWeeklySummary(
   const days = daily.length;
 
   const totalRevenuePerDay = machines.reduce(
-    (sum, machine) =>
-      sum + machine.expectedSalesPerDay * machine.averageProfitMarginPercentage,
+    (sum, m) => sum + m.expectedSalesPerDay * m.averageProfitMarginPercentage,
     0
   );
 
   const totalRentPerDay = machines.reduce(
-    (sum, machine) => sum + machine.rentCostPerDay,
+    (sum, m) => sum + m.rentCostPerDay,
     0
   );
 
-  const totalElectricity = daily.reduce(
-    (sum, day) => sum + day.electricityCost,
-    0
-  );
+  const totalElectricity = daily.reduce((sum, d) => sum + d.electricityCost, 0);
 
   const totalRevenue = totalRevenuePerDay * days;
   const totalRent = totalRentPerDay * days;
+  const totalElectricityWeekly = totalElectricity;
 
-  const netProfitOrLoss = totalRevenue - totalRent - totalElectricity;
+  const netProfitOrLoss = totalRevenue - totalRent - totalElectricityWeekly;
 
-  const avgTemp =
-    daily.reduce((sum, day) => sum + day.avgTemp, 0) / daily.length;
+  const avgTemp = daily.reduce((sum, d) => sum + d.avgTemp, 0) / daily.length;
 
   const profitMargin =
-    totalRevenue > 0 ? (netProfitOrLoss / totalRevenue) * 100 : undefined;
+    totalRevenue > 0
+      ? Number(((netProfitOrLoss / totalRevenue) * 100).toFixed(2))
+      : undefined;
 
   return {
-    totalRevenue,
-    totalRent,
-    totalElectricity,
-    netProfitOrLoss,
-    avgTemp,
+    totalRevenue: Number(totalRevenue.toFixed(2)),
+    totalRent: Number(totalRent.toFixed(2)),
+    totalElectricity: Number(totalElectricityWeekly.toFixed(2)),
+    netProfitOrLoss: Number(netProfitOrLoss.toFixed(2)),
+    avgTemp: Number(avgTemp.toFixed(2)),
     profitMargin,
   };
 }
