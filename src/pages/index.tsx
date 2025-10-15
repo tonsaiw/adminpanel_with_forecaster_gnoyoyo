@@ -83,7 +83,7 @@ export default function Home() {
                 <button
                   type="button"
                   onClick={handleAddClick}
-                  className="inline-flex items-center justify-center rounded-lg bg-slate-900 px-4 py-2 text-sm font-semibold text-white transition hover:bg-slate-700"
+                  className="inline-flex items-center justify-center rounded-lg bg-slate-900 px-4 py-2 text-sm font-semibold text-white transition hover:bg-slate-700 cursor-pointer hover:cursor-pointer"
                 >
                   + Add
                 </button>

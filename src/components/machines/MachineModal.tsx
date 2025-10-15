@@ -67,14 +67,12 @@ export const MachineModal = ({
         <form onSubmit={handleSubmit(handleFormSubmit)} className="p-6">
           <div className="flex items-center justify-between">
             <h3 className="text-lg font-semibold text-slate-900">
-              {initialValues
-                ? "แก้ไขข้อมูลเครื่องขายสินค้า"
-                : "เพิ่มข้อมูลเครื่องขายสินค้า"}
+              {initialValues ? "Edit Machine" : "Add Machine"}
             </h3>
             <button
               type="button"
               onClick={onClose}
-              className="inline-flex h-9 w-9 items-center justify-center rounded-full text-slate-500 transition hover:bg-slate-100 hover:text-slate-900"
+              className="inline-flex h-9 w-9 items-center justify-center rounded-full text-slate-500 transition hover:bg-slate-100 hover:text-slate-900 cursor-pointer hover:cursor-pointer"
             >
               ✕
             </button>
@@ -183,14 +181,14 @@ export const MachineModal = ({
             <button
               type="button"
               onClick={onClose}
-              className="inline-flex items-center justify-center rounded-lg border border-slate-200 px-4 py-2 text-sm font-medium text-slate-600 transition hover:bg-slate-100"
+              className="inline-flex items-center justify-center rounded-lg border border-slate-200 px-4 py-2 text-sm font-medium text-slate-600 transition hover:bg-slate-100 cursor-pointer hover:cursor-pointer"
             >
               Cancel
             </button>
             <button
               type="submit"
               disabled={isSubmitting}
-              className="inline-flex items-center justify-center rounded-lg bg-slate-900 px-4 py-2 text-sm font-semibold text-white transition hover:bg-slate-700 disabled:cursor-not-allowed disabled:opacity-60"
+              className="inline-flex items-center justify-center rounded-lg bg-slate-900 px-4 py-2 text-sm font-semibold text-white transition hover:bg-slate-700 disabled:cursor-not-allowed disabled:opacity-60 cursor-pointer hover:cursor-pointer"
             >
               Save
             </button>
