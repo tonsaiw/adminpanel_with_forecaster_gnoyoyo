@@ -2,6 +2,7 @@ import { useState } from "react";
 import { MachineTable } from "@/components/machines/MachineTable";
 import { MachineModal } from "@/components/machines/MachineModal";
 import { MachineDeleteConfirmModal } from "@/components/machines/MachineDeleteConfirmModal";
+import { BestLocationCard } from "@/components/dashboard/BestLocationCard";
 import { MachinesProvider, useMachines } from "@/hooks/useMachines";
 import type { Machine, MachineInput } from "@/schemas/machine.schema";
 
@@ -85,10 +86,8 @@ const HomeContent = () => {
                 />
               </div>
             </section>
-            <section className="overflow-hidden rounded-2xl border border-slate-200 bg-white p-4 shadow-sm sm:p-5 lg:p-6">
-              <h2 className="text-xl font-semibold text-slate-900">
-                Forecast Dashboard
-              </h2>
+            <section className="space-y-4">
+              <BestLocationCard />
             </section>
           </div>
         </div>

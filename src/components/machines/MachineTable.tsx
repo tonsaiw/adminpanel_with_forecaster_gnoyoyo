@@ -186,7 +186,7 @@ export const MachineTable = ({ onEdit, onDelete }: MachineTableProps) => {
         cell: (info) => info.getValue<number>(),
       },
       {
-        header: "electricCostPerTempPerDay (Baht per °C per day)",
+        header: "electricCost (Baht per °C per day)",
         accessorKey: "electricCostPerTempPerDay",
         size: 220,
         cell: (info) => info.getValue<number>(),
