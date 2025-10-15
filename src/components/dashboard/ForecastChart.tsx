@@ -32,7 +32,7 @@ export function ForecastChart({
     return (
       <div className="rounded-xl border bg-white p-6 shadow-sm">
         <h3 className="mb-4 text-sm font-medium text-gray-500">
-          📈 7-DAY FORECAST
+          7-DAY FORECAST
         </h3>
         <Skeleton height={280} borderRadius="0.75rem" />
       </div>
@@ -49,11 +49,14 @@ export function ForecastChart({
 
   return (
     <div className="rounded-xl border bg-white p-6 shadow-sm">
-      <h3 className="mb-4 text-sm font-medium text-gray-500">📈 7-DAY FORECAST</h3>
+      <h3 className="mb-4 text-sm font-medium text-gray-500">7-DAY FORECAST</h3>
 
       <div className="h-72">
         <ResponsiveContainer width="100%" height="100%">
-          <LineChart data={data} margin={{ top: 10, right: 24, bottom: 0, left: 0 }}>
+          <LineChart
+            data={data}
+            margin={{ top: 10, right: 24, bottom: 0, left: 0 }}
+          >
             <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
             <XAxis dataKey="date" tick={{ fontSize: 12 }} />
             <YAxis tickFormatter={(v) => formatTHB(v as number)} width={80} />

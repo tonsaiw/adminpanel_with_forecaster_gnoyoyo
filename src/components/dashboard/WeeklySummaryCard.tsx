@@ -102,14 +102,7 @@ export function WeeklySummaryCard({ summary, isLoading }: WeeklySummaryProps) {
         <p className="mt-1 text-sm text-gray-500">
           {isProfit ? "↑ Profitable" : "↓ Loss recorded"}
         </p>
-        <div className="my-3 h-px w-full bg-gray-200" />
-        <p className="text-xs text-gray-500">
-          {profitMargin !== undefined
-            ? `${Math.abs(profitMargin).toFixed(1)}% profit margin`
-            : "—"}
-        </p>
       </div>
     </section>
   );
 }
-
