@@ -1,4 +1,7 @@
-export function generateMachineId(existingCount: number): string {
-  const nextIndex = existingCount + 1;
-  return `machine-${String(nextIndex).padStart(3, "0")}`;
+export function generateMachineId(_: number): string {
+  const randomPart =
+    typeof crypto !== "undefined" && "randomUUID" in crypto
+      ? crypto.randomUUID().replace(/-/g, "").slice(0, 8)
+      : Math.random().toString(36).slice(2, 10);
+  return `machine-${randomPart}`;
 }

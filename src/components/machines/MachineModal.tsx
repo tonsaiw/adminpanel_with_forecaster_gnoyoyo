@@ -1,7 +1,8 @@
-import { useEffect } from "react";
-import { useForm } from "react-hook-form";
+import { useEffect, useRef, useState } from "react";
+import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { MachineInput, machineInputSchema } from "@/schemas/machine.schema";
+import { ChevronDown } from "lucide-react";
 
 const emptyMachineForm: MachineInput = {
   name: "",
@@ -19,6 +20,107 @@ type MachineModalProps = {
   initialValues?: MachineInput;
 };
 
+const locationOptions = [
+  { value: "SCHOOL" as const, label: "School" },
+  { value: "SHOPPING MALL" as const, label: "Shopping Mall" },
+  { value: "HOSPITAL" as const, label: "Hospital" },
+];
+
+type LocationTypeDropdownProps = {
+  value: MachineInput["locationType"];
+  onChange: (value: MachineInput["locationType"]) => void;
+  error?: string;
+};
+
+const LocationTypeDropdown = ({
+  value,
+  onChange,
+  error,
+}: LocationTypeDropdownProps) => {
+  const [open, setOpen] = useState(false);
+  const containerRef = useRef<HTMLDivElement | null>(null);
+  const selected = locationOptions.find((option) => option.value === value);
+
+  useEffect(() => {
+    if (!open) return;
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        containerRef.current &&
+        event.target instanceof Node &&
+        !containerRef.current.contains(event.target)
+      ) {
+        setOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [open]);
+
+  return (
+    <div>
+      <label className="mb-1.5 block text-sm font-semibold text-slate-800">
+        Location Type
+      </label>
+      <div ref={containerRef} className="relative">
+        <button
+          type="button"
+          onClick={() => setOpen((prev) => !prev)}
+          className="flex w-full items-center justify-between rounded-xl border-2 border-slate-200 bg-white px-4 py-2.5 text-left text-sm text-slate-900 shadow-sm transition-all duration-200 hover:border-slate-300 focus:border-slate-500 focus:outline-none focus:ring-4 focus:ring-indigo-100"
+        >
+          <span>{selected?.label ?? "Select a location"}</span>
+          <ChevronDown
+            className={`h-4 w-4 text-slate-400 transition-transform duration-200 ${
+              open ? "rotate-180" : ""
+            }`}
+          />
+        </button>
+        <div
+          className={`absolute left-0 right-0 z-20 mt-2 origin-top rounded-xl border border-slate-200 bg-white shadow-lg transition-all duration-200 ${
+            open
+              ? "scale-100 opacity-100"
+              : "pointer-events-none scale-95 opacity-0"
+          }`}
+        >
+          <ul className="py-1">
+            {locationOptions.map((option) => {
+              const isActive = option.value === value;
+              return (
+                <li key={option.value}>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      onChange(option.value);
+                      setOpen(false);
+                    }}
+                    className={`flex w-full items-center justify-between px-4 py-2 text-sm transition-colors duration-150 ${
+                      isActive
+                        ? "bg-indigo-50 text-slate-600"
+                        : "text-slate-700 hover:bg-slate-100"
+                    }`}
+                  >
+                    <span>{option.label}</span>
+                    {isActive ? (
+                      <span className="h-2 w-2 rounded-full bg-slate-500" />
+                    ) : (
+                      <span className="h-2 w-2 rounded-full bg-transparent" />
+                    )}
+                  </button>
+                </li>
+              );
+            })}
+          </ul>
+        </div>
+      </div>
+      {error ? (
+        <p className="mt-2 flex items-center gap-1.5 text-xs font-medium text-rose-600">
+          <span className="inline-block h-1 w-1 rounded-full bg-rose-600" />
+          {error}
+        </p>
+      ) : null}
+    </div>
+  );
+};
+
 export const MachineModal = ({
   open,
   onClose,
@@ -27,6 +129,7 @@ export const MachineModal = ({
 }: MachineModalProps) => {
   const {
     register,
+    control,
     handleSubmit,
     formState: { errors, isSubmitting },
     reset,
@@ -94,25 +197,17 @@ export const MachineModal = ({
                 </p>
               ) : null}
             </div>
-            <div>
-              <label className="mb-1.5 block text-sm font-semibold text-slate-800">
-                Location Type
-              </label>
-              <select
-                {...register("locationType")}
-                className="w-full rounded-xl border-2 border-slate-200 bg-white px-4 py-2.5 text-sm text-slate-900 shadow-sm transition-all duration-200 hover:border-slate-300 focus:border-slate-500 focus:outline-none focus:ring-4 focus:ring-indigo-100 cursor-pointer appearance-none bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIiIGhlaWdodD0iOCIgdmlld0JveD0iMCAwIDEyIDgiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0iTTEgMS41TDYgNi41TDExIDEuNSIgc3Ryb2tlPSIjNjQ3NDhCIiBzdHJva2Utd2lkdGg9IjIiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPjwvc3ZnPg==')] bg-[length:16px] bg-[right_1rem_center] bg-no-repeat pr-12"
-              >
-                <option value="SCHOOL">School</option>
-                <option value="SHOPPING MALL">Shopping Mall</option>
-                <option value="HOSPITAL">Hospital</option>
-              </select>
-              {errors.locationType ? (
-                <p className="mt-2 flex items-center gap-1.5 text-xs font-medium text-rose-600">
-                  <span className="inline-block h-1 w-1 rounded-full bg-rose-600" />
-                  {errors.locationType.message}
-                </p>
-              ) : null}
-            </div>
+            <Controller
+              name="locationType"
+              control={control}
+              render={({ field }) => (
+                <LocationTypeDropdown
+                  value={field.value}
+                  onChange={field.onChange}
+                  error={errors.locationType?.message}
+                />
+              )}
+            />
             <div>
               <label className="mb-1.5 block text-sm font-semibold text-slate-800">
                 expected Sales Per Day (THB)

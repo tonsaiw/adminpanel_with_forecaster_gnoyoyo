@@ -8,7 +8,7 @@ import { generateMachineId } from "@/lib/storage";
 
 const seedMachines: Machine[] = [
   {
-    id: "machine-001",
+    id: "machine-aB7xLq2Z",
     name: "Siam Paragon Lobby",
     locationType: "SHOPPING MALL",
     expectedSalesPerDay: 6200,
@@ -17,7 +17,7 @@ const seedMachines: Machine[] = [
     electricCostPerTempPerDay: 16,
   },
   {
-    id: "machine-002",
+    id: "machine-H9t6Jp0c",
     name: "Chulalongkorn University Canteen",
     locationType: "SCHOOL",
     expectedSalesPerDay: 4300,
@@ -26,7 +26,7 @@ const seedMachines: Machine[] = [
     electricCostPerTempPerDay: 12,
   },
   {
-    id: "machine-003",
+    id: "machine-Rz3kQ8yV",
     name: "Bangkok Hospital Lobby",
     locationType: "HOSPITAL",
     expectedSalesPerDay: 5100,
