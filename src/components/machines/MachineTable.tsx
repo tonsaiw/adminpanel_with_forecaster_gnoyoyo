@@ -76,6 +76,24 @@ const ActionCell = ({ machine, onEdit, onDelete }: ActionCellProps) => {
     };
   }, [open, updateMenuPosition]);
 
+  // useEffect(() => {
+  //   if (!open) {
+  //     return;
+  //   }
+  //   const previousOverflow = document.body.style.overflow;
+  //   const previousPaddingRight = document.body.style.paddingRight;
+  //   document.body.style.overflow = "hidden";
+  //   const scrollbarWidth =
+  //     window.innerWidth - document.documentElement.clientWidth;
+  //   if (scrollbarWidth > 0) {
+  //     document.body.style.paddingRight = `${scrollbarWidth}px`;
+  //   }
+  //   return () => {
+  //     document.body.style.overflow = previousOverflow;
+  //     document.body.style.paddingRight = previousPaddingRight;
+  //   };
+  // }, [open]);
+
   const handleEdit = () => {
     setOpen(false);
     onEdit(machine);
@@ -111,7 +129,7 @@ const ActionCell = ({ machine, onEdit, onDelete }: ActionCellProps) => {
         ? createPortal(
             <div
               ref={menuContentRef}
-              className="fixed z-[60] w-36 overflow-hidden rounded-md border border-slate-200 bg-white shadow-lg"
+              className="fixed z-[60] w-36 overflow-hidden rounded-xl border-2 border-slate-200 bg-white shadow-lg"
               style={{
                 top: menuPosition.top,
                 left: menuPosition.left,
@@ -120,14 +138,14 @@ const ActionCell = ({ machine, onEdit, onDelete }: ActionCellProps) => {
               <button
                 type="button"
                 onClick={handleEdit}
-                className="flex w-full items-center gap-2 px-3 py-2 text-left text-sm text-slate-600 transition hover:bg-slate-50 hover:text-slate-900 cursor-pointer hover:cursor-pointer"
+                className="flex w-full items-center gap-2 px-3 py-2 text-left text-sm font-semibold text-slate-600 transition hover:bg-slate-50 hover:text-slate-900 cursor-pointer hover:cursor-pointer"
               >
                 Edit
               </button>
               <button
                 type="button"
                 onClick={handleDelete}
-                className="flex w-full items-center gap-2 px-3 py-2 text-left text-sm text-rose-600 transition hover:bg-rose-50 hover:text-rose-700 cursor-pointer hover:cursor-pointer"
+                className="flex w-full items-center gap-2 px-3 py-2 text-left text-sm font-semibold text-rose-600 transition hover:bg-rose-50 hover:text-rose-700 cursor-pointer hover:cursor-pointer"
               >
                 Delete
               </button>
@@ -211,7 +229,7 @@ export const MachineTable = ({ onEdit, onDelete }: MachineTableProps) => {
         },
       },
       {
-        header: "electricCost (Baht per °C)",
+        header: "electric Cost (Baht per °C)",
         accessorKey: "electricCostPerTempPerDay",
         size: 220,
         cell: (info) => info.getValue<number>(),

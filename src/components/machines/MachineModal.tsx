@@ -189,6 +189,7 @@ export const MachineModal = ({
                 type="text"
                 {...register("name")}
                 className="w-full rounded-xl border-2 border-slate-200 bg-white px-4 py-2.5 text-sm text-slate-900 shadow-sm transition-all duration-200 placeholder:text-slate-400 hover:border-slate-300 focus:border-slate-500 focus:outline-none focus:ring-4 focus:ring-indigo-100"
+                placeholder="Name of the Machine"
               />
               {errors.name ? (
                 <p className="mt-2 flex items-center gap-1.5 text-xs font-medium text-rose-600">

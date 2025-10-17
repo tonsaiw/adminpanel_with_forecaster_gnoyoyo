@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { MachineTable } from "@/components/machines/MachineTable";
 import { MachineModal } from "@/components/machines/MachineModal";
 import { MachineDeleteConfirmModal } from "@/components/machines/MachineDeleteConfirmModal";
@@ -28,6 +28,23 @@ export default function Home() {
   const [modalOpen, setModalOpen] = useState(false);
   const [editingMachine, setEditingMachine] = useState<Machine | null>(null);
   const [deleteTarget, setDeleteTarget] = useState<Machine | null>(null);
+
+  // useEffect(() => {
+  //   const originalOverflow = document.body.style.overflow;
+  //   const originalPaddingRight = document.body.style.paddingRight;
+  //   if (modalOpen || deleteTarget) {
+  //     document.body.style.overflow = "hidden";
+  //     const scrollbarWidth =
+  //       window.innerWidth - document.documentElement.clientWidth;
+  //     if (scrollbarWidth > 0) {
+  //       document.body.style.paddingRight = `${scrollbarWidth}px`;
+  //     }
+  //   }
+  //   return () => {
+  //     document.body.style.overflow = originalOverflow;
+  //     document.body.style.paddingRight = originalPaddingRight;
+  //   };
+  // }, [modalOpen, deleteTarget]);
 
   const handleSubmit = (machine: MachineInput) => {
     if (editingMachine) {

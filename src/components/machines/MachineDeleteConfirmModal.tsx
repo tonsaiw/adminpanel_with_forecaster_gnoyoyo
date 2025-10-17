@@ -44,9 +44,9 @@ export const MachineDeleteConfirmModal = ({
           <button
             type="button"
             onClick={onConfirm}
-            className="inline-flex items-center justify-center rounded-xl bg-slate-900 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-slate-700 active:scale-95 cursor-pointer hover:cursor-pointer"
+            className="inline-flex items-center justify-center rounded-xl bg-red-600 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-red-700 active:scale-95 cursor-pointer hover:cursor-pointer"
           >
-            Save
+            Delete
           </button>
         </div>
       </div>
