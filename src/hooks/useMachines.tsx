@@ -104,11 +104,16 @@ export const MachinesProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const updateMachine = (id: string, input: MachineInput) => {
-    setMachines((prev) =>
-      prev.map((machine) =>
-        machine.id === id ? { ...machine, ...input } : machine
-      )
-    );
+    setMachines((prev) => {
+      const nextMachine = prev.find((machine) => machine.id === id);
+      if (!nextMachine) {
+        return prev;
+      }
+
+      const updatedMachine = { ...nextMachine, ...input };
+      const remaining = prev.filter((machine) => machine.id !== id);
+      return [updatedMachine, ...remaining];
+    });
   };
 
   const value = useMemo(

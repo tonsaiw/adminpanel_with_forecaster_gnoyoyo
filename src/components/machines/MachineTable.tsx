@@ -159,6 +159,7 @@ export const MachineTable = ({ onEdit, onDelete }: MachineTableProps) => {
   const highlightTimeoutRef = useRef<number | null>(null);
   const previousMachineIdsRef = useRef<Set<string>>(new Set());
   const isInitializedRef = useRef(false);
+  const previousTopMachineIdRef = useRef<string | null>(null);
 
   const columns = useMemo<ColumnDef<Machine>[]>(() => {
     return [
@@ -256,9 +257,11 @@ export const MachineTable = ({ onEdit, onDelete }: MachineTableProps) => {
     }
 
     const currentIds = new Set(machines.map((machine) => machine.id));
+    const currentTopId = machines[0]?.id ?? null;
 
     if (!isInitializedRef.current) {
       previousMachineIdsRef.current = currentIds;
+      previousTopMachineIdRef.current = currentTopId;
       isInitializedRef.current = true;
       return;
     }
@@ -271,9 +274,16 @@ export const MachineTable = ({ onEdit, onDelete }: MachineTableProps) => {
       }
     });
 
+    let targetId: string | null = null;
+
     if (newIds.length > 0) {
-      const latestId = newIds[0];
-      setHighlightedRowId(latestId);
+      targetId = newIds[0];
+    } else if (currentTopId && currentTopId !== previousTopMachineIdRef.current) {
+      targetId = currentTopId;
+    }
+
+    if (targetId) {
+      setHighlightedRowId(targetId);
 
       if (typeof window !== "undefined") {
         if (highlightTimeoutRef.current) {
@@ -282,7 +292,7 @@ export const MachineTable = ({ onEdit, onDelete }: MachineTableProps) => {
 
         highlightTimeoutRef.current = window.setTimeout(() => {
           setHighlightedRowId((current) =>
-            current === latestId ? null : current
+            current === targetId ? null : current
           );
           highlightTimeoutRef.current = null;
         }, 3000);
@@ -290,6 +300,7 @@ export const MachineTable = ({ onEdit, onDelete }: MachineTableProps) => {
     }
 
     previousMachineIdsRef.current = currentIds;
+    previousTopMachineIdRef.current = currentTopId;
   }, [machines, isHydrated]);
 
   useEffect(() => {
