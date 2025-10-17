@@ -29,12 +29,18 @@ const ActionCell = ({ machine, onEdit, onDelete }: ActionCellProps) => {
   } | null>(null);
 
   const updateMenuPosition = useCallback(() => {
-    if (!anchorRef.current) return;
-    const rect = anchorRef.current.getBoundingClientRect();
-    const left = rect.right + window.scrollX - MENU_WIDTH_PX;
+    const anchor = anchorRef.current;
+    if (!anchor) return;
+
+    const rect = anchor.getBoundingClientRect();
+    const viewportWidth = window.innerWidth;
+    const minLeft = 16;
+    const maxLeft = Math.max(minLeft, viewportWidth - MENU_WIDTH_PX - 16);
+    const desiredLeft = rect.right - MENU_WIDTH_PX;
+
     setMenuPosition({
-      top: rect.bottom + window.scrollY + MENU_OFFSET_Y,
-      left: Math.max(16, left),
+      top: rect.bottom + MENU_OFFSET_Y,
+      left: Math.min(maxLeft, Math.max(minLeft, desiredLeft)),
     });
   }, []);
 
@@ -302,7 +308,7 @@ export const MachineTable = ({ onEdit, onDelete }: MachineTableProps) => {
   if (machines.length === 0) {
     return (
       <div className="rounded-lg border border-dashed border-slate-300 bg-slate-50 p-12 text-center text-slate-500">
-        ยังไม่มีข้อมูลเครื่องขายสินค้า โปรดเพิ่มรายการใหม่
+        There is no information about the machine yet. Please add a new machine.
       </div>
     );
   }

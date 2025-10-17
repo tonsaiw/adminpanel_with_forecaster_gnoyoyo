@@ -72,7 +72,9 @@ export default function Home() {
             <h1 className="text-3xl font-semibold text-primary-500 md:text-4xl">
               TAO BIN Forecaster Dashboard
             </h1>
-            <p className="mt-2 text-secondary">TAO BIN Forecaster Dashboard</p>
+            <p className="mt-2 text-secondary-500">
+              TAO BIN Forecaster Dashboard
+            </p>
           </header>
           <div className="relative grid flex-1 gap-6 lg:grid-cols-2">
             <section className="relative overflow-hidden rounded-2xl border border-slate-200 bg-white p-4 shadow-sm sm:p-5 lg:p-6">

@@ -41,8 +41,13 @@ export function ForecastChart({
 
   if (!data?.length) {
     return (
-      <div className="rounded-xl border bg-white p-6 text-center text-sm text-gray-500 shadow-sm">
-        No forecast data available.
+      <div className="rounded-xl border bg-white p-6 shadow-sm">
+        <h3 className="mb-4 text-xl font-semibold text-primary-500">
+          7-DAY FORECAST
+        </h3>
+        <div className="rounded-xl border bg-white p-6 text-center text-sm text-gray-500 shadow-sm">
+          No forecast data available.
+        </div>
       </div>
     );
   }
