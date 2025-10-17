@@ -2,6 +2,8 @@
 
 This project bootstraps a Next.js (Pages Router) frontend that will simulate TAO BIN vending machine operations and forecast profit or loss using Bangkok weather data. The stack includes TypeScript, TailwindCSS, React Query, and Zod to emphasize clean architecture and maintainability.
 
+<!-- ใช้ font และ สี จากใน website หลัก -->
+
 ### Getting Started
 
 Install dependencies and launch the development server:
