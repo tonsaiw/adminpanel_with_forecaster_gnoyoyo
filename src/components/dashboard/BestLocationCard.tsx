@@ -23,21 +23,23 @@ export function BestLocationCard() {
 
   return (
     <div className="rounded-xl border bg-white p-6 shadow-sm text-center">
-      <h3 className="text-sm font-medium text-gray-500">🏆 BEST SELLING LOCATION</h3>
-      <div className="mt-4 text-2xl font-semibold text-gray-800">
+      <h3 className="text-xl font-semibold text-primary-500">
+        🏆 BEST SELLING LOCATION
+      </h3>
+      <div className="mt-4 text-2xl font-semibold text-secondary-500">
         {typeEmoji(summary.type)} {summary.type}
       </div>
 
-      <div className="mt-4 text-gray-600">
-        Total Sales: {" "}
-        <span className="font-medium text-gray-900">
+      <div className="mt-4 text-primary-400">
+        Total Sales:{" "}
+        <span className="font-medium text-secondary-500">
           {formatTHB(summary.totalSales)}/day
         </span>
       </div>
 
-      <div className="mt-4 h-px w-full bg-gray-200" />
+      <div className="mt-4 h-px w-full bg-foreground" />
 
-      <div className="mt-3 text-sm text-gray-500">
+      <div className="mt-3 text-sm text-primary-400">
         {summary.count} machines • {summary.percent}% of total
       </div>
     </div>

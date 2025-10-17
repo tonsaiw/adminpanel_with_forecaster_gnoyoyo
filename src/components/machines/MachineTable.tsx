@@ -8,6 +8,7 @@ import {
 } from "@tanstack/react-table";
 import { Machine } from "@/types/machine";
 import { useMachines } from "@/hooks/useMachines";
+import { useBodyScrollLock } from "@/hooks/useBodyScrollLock";
 
 type ActionCellProps = {
   machine: Machine;
@@ -75,6 +76,8 @@ const ActionCell = ({ machine, onEdit, onDelete }: ActionCellProps) => {
       window.removeEventListener("scroll", handleScroll, true);
     };
   }, [open, updateMenuPosition]);
+
+  useBodyScrollLock(open);
 
   const handleEdit = () => {
     setOpen(false);

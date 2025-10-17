@@ -59,14 +59,14 @@ const LocationTypeDropdown = ({
 
   return (
     <div>
-      <label className="mb-1.5 block text-sm font-semibold text-slate-800">
+      <label className="mb-1.5 block text-sm font-semibold text-primary-400">
         Location Type
       </label>
       <div ref={containerRef} className="relative">
         <button
           type="button"
           onClick={() => setOpen((prev) => !prev)}
-          className="flex w-full items-center justify-between rounded-xl border-2 border-slate-200 bg-white px-4 py-2.5 text-left text-sm text-slate-900 shadow-sm transition-all duration-200 hover:border-slate-300 focus:border-slate-500 focus:outline-none focus:ring-4 focus:ring-indigo-100"
+          className="flex w-full items-center justify-between rounded-xl border-2 border-secondary-300 bg-white px-4 py-2.5 text-left text-sm text-slate-900 shadow-sm transition-all duration-200 hover:border-secondary-400 focus:border-secondary-500 focus:outline-none focus:ring-4 focus:ring-secondary-300"
         >
           <span>{selected?.label ?? "Select a location"}</span>
           <ChevronDown
@@ -76,7 +76,7 @@ const LocationTypeDropdown = ({
           />
         </button>
         <div
-          className={`absolute left-0 right-0 z-20 mt-2 origin-top rounded-xl border border-slate-200 bg-white shadow-lg transition-all duration-200 ${
+          className={`absolute left-0 right-0 z-20 mt-2 origin-top pt-1 pb-1 rounded-xl border border-secondary-300 bg-white shadow-lg transition-all duration-200 ${
             open
               ? "scale-100 opacity-100"
               : "pointer-events-none scale-95 opacity-0"
@@ -93,15 +93,15 @@ const LocationTypeDropdown = ({
                       onChange(option.value);
                       setOpen(false);
                     }}
-                    className={`flex w-full items-center justify-between px-4 py-2 text-sm transition-colors duration-150 ${
+                    className={`flex w-full items-center justify-between px-4 py-2 text-sm transition-colors duration-150 hover:cursor-pointer ${
                       isActive
-                        ? "bg-indigo-50 text-slate-600"
-                        : "text-slate-700 hover:bg-slate-100"
+                        ? "bg-secondary-300 text-primary-400"
+                        : "text-primary-500 hover:bg-foreground"
                     }`}
                   >
                     <span>{option.label}</span>
                     {isActive ? (
-                      <span className="h-2 w-2 rounded-full bg-slate-500" />
+                      <span className="h-2 w-2 rounded-full bg-secondary-500" />
                     ) : (
                       <span className="h-2 w-2 rounded-full bg-transparent" />
                     )}
@@ -172,7 +172,7 @@ export const MachineModal = ({
       >
         <form onSubmit={handleSubmit(handleFormSubmit)} className="p-6">
           <div className="flex items-center justify-between">
-            <h3 className="text-lg font-semibold text-slate-900">
+            <h3 className="text-xl font-semibold text-primary-500">
               {initialValues ? "Edit Machine" : "Add Machine"}
             </h3>
             <button
@@ -185,13 +185,13 @@ export const MachineModal = ({
           </div>
           <div className="mt-6 grid grid-cols-1 gap-5 sm:grid-cols-2">
             <div>
-              <label className="block text-sm font-semibold text-slate-800 mb-1.5">
+              <label className="block text-sm font-semibold text-primary-400 mb-1.5">
                 Name
               </label>
               <input
                 type="text"
                 {...register("name")}
-                className="w-full rounded-xl border-2 border-slate-200 bg-white px-4 py-2.5 text-sm text-slate-900 shadow-sm transition-all duration-200 placeholder:text-slate-400 hover:border-slate-300 focus:border-slate-500 focus:outline-none focus:ring-4 focus:ring-indigo-100"
+                className="w-full rounded-xl border-2 border-secondary-300 bg-white px-4 py-2.5 text-sm text-slate-900 shadow-sm transition-all duration-200 placeholder:text-slate-400 hover:border-secondary-400 focus:border-secondary-500 focus:outline-none focus:ring-4 focus:ring-secondary-300"
                 placeholder="Name of the Machine"
               />
               {errors.name ? (
@@ -213,13 +213,13 @@ export const MachineModal = ({
               )}
             />
             <div>
-              <label className="mb-1.5 block text-sm font-semibold text-slate-800">
+              <label className="mb-1.5 block text-sm font-semibold text-primary-400">
                 expected Sales Per Day (THB)
               </label>
               <input
                 type="number"
                 {...register("expectedSalesPerDay", { valueAsNumber: true })}
-                className="w-full rounded-xl border-2 border-slate-200 bg-white px-4 py-2.5 text-sm text-slate-900 shadow-sm transition-all duration-200 placeholder:text-slate-400 hover:border-slate-300 focus:border-slate-500 focus:outline-none focus:ring-4 focus:ring-indigo-100"
+                className="w-full rounded-xl border-2 border-secondary-300 bg-white px-4 py-2.5 text-sm text-slate-900 shadow-sm transition-all duration-200 placeholder:text-slate-400 hover:border-secondary-400 focus:border-secondary-500 focus:outline-none focus:ring-4 focus:ring-secondary-300"
               />
               {errors.expectedSalesPerDay ? (
                 <p className="mt-2 flex items-center gap-1.5 text-xs font-medium text-rose-600">
@@ -229,7 +229,7 @@ export const MachineModal = ({
               ) : null}
             </div>
             <div>
-              <label className="mb-1.5 block text-sm font-semibold text-slate-800">
+              <label className="mb-1.5 block text-sm font-semibold text-primary-400">
                 average Profit Margin Percentage (%)
               </label>
               <input
@@ -238,7 +238,7 @@ export const MachineModal = ({
                 {...register("averageProfitMarginPercentage", {
                   valueAsNumber: true,
                 })}
-                className="w-full rounded-xl border-2 border-slate-200 bg-white px-4 py-2.5 text-sm text-slate-900 shadow-sm transition-all duration-200 placeholder:text-slate-400 hover:border-slate-300 focus:border-slate-500 focus:outline-none focus:ring-4 focus:ring-indigo-100"
+                className="w-full rounded-xl border-2 border-secondary-300 bg-white px-4 py-2.5 text-sm text-slate-900 shadow-sm transition-all duration-200 placeholder:text-slate-400 hover:border-secondary-400 focus:border-secondary-500 focus:outline-none focus:ring-4 focus:ring-secondary-300"
               />
               {errors.averageProfitMarginPercentage ? (
                 <p className="mt-2 flex items-center gap-1.5 text-xs font-medium text-rose-600">
@@ -248,13 +248,13 @@ export const MachineModal = ({
               ) : null}
             </div>
             <div>
-              <label className="mb-1.5 block text-sm font-semibold text-slate-800">
+              <label className="mb-1.5 block text-sm font-semibold text-primary-400">
                 Rent Cost Per Day (THB)
               </label>
               <input
                 type="number"
                 {...register("rentCostPerDay", { valueAsNumber: true })}
-                className="w-full rounded-xl border-2 border-slate-200 bg-white px-4 py-2.5 text-sm text-slate-900 shadow-sm transition-all duration-200 placeholder:text-slate-400 hover:border-slate-300 focus:border-slate-500 focus:outline-none focus:ring-4 focus:ring-indigo-100"
+                className="w-full rounded-xl border-2 border-secondary-300 bg-white px-4 py-2.5 text-sm text-slate-900 shadow-sm transition-all duration-200 placeholder:text-slate-400 hover:border-secondary-400 focus:border-secondary-500 focus:outline-none focus:ring-4 focus:ring-secondary-300"
               />
               {errors.rentCostPerDay ? (
                 <p className="mt-2 flex items-center gap-1.5 text-xs font-medium text-rose-600">
@@ -264,7 +264,7 @@ export const MachineModal = ({
               ) : null}
             </div>
             <div>
-              <label className="mb-1.5 block text-sm font-semibold text-slate-800">
+              <label className="mb-1.5 block text-sm font-semibold text-primary-400">
                 Electric Cost Per Temp Per Day
               </label>
               <input
@@ -272,7 +272,7 @@ export const MachineModal = ({
                 {...register("electricCostPerTempPerDay", {
                   valueAsNumber: true,
                 })}
-                className="w-full rounded-xl border-2 border-slate-200 bg-white px-4 py-2.5 text-sm text-slate-900 shadow-sm transition-all duration-200 placeholder:text-slate-400 hover:border-slate-300 focus:border-slate-500 focus:outline-none focus:ring-4 focus:ring-indigo-100"
+                className="w-full rounded-xl border-2 border-secondary-300 bg-white px-4 py-2.5 text-sm text-slate-900 shadow-sm transition-all duration-200 placeholder:text-slate-400 hover:border-secondary-400 focus:border-secondary-500 focus:outline-none focus:ring-4 focus:ring-secondary-300"
               />
               {errors.electricCostPerTempPerDay ? (
                 <p className="mt-2 flex items-center gap-1.5 text-xs font-medium text-rose-600">
@@ -293,7 +293,7 @@ export const MachineModal = ({
             <button
               type="submit"
               disabled={isSubmitting}
-              className="inline-flex items-center justify-center rounded-xl bg-slate-900 px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-slate-700 disabled:cursor-not-allowed disabled:opacity-60 active:scale-95 cursor-pointer hover:cursor-pointer"
+              className="inline-flex items-center justify-center rounded-xl bg-secondary-400 px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-secondary-500 disabled:cursor-not-allowed disabled:opacity-60 active:scale-95 cursor-pointer hover:cursor-pointer"
             >
               Save
             </button>

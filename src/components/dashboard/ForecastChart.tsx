@@ -31,7 +31,7 @@ export function ForecastChart({
   if (isLoading) {
     return (
       <div className="rounded-xl border bg-white p-6 shadow-sm">
-        <h3 className="mb-4 text-sm font-medium text-gray-500">
+        <h3 className="mb-4 text-xl font-semibold text-primary-500">
           7-DAY FORECAST
         </h3>
         <Skeleton height={280} borderRadius="0.75rem" />
@@ -49,7 +49,9 @@ export function ForecastChart({
 
   return (
     <div className="rounded-xl border bg-white p-6 shadow-sm">
-      <h3 className="mb-4 text-sm font-medium text-gray-500">7-DAY FORECAST</h3>
+      <h3 className="mb-4 text-xl font-semibold text-primary-500">
+        7-DAY FORECAST
+      </h3>
 
       <div className="h-72">
         <ResponsiveContainer width="100%" height="100%">

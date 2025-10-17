@@ -1,50 +1,57 @@
 import { useEffect } from "react";
 
+const BODY_LOCK_CLASS = "overflow-hidden";
+
 const scrollLockState: {
   count: number;
-  scrollY: number;
-  htmlOverflow: string;
-  bodyOverflow: string;
+  htmlHadClass: boolean;
+  bodyHadClass: boolean;
   bodyPaddingRight: string;
 } = {
   count: 0,
-  scrollY: 0,
-  htmlOverflow: "",
-  bodyOverflow: "",
+  htmlHadClass: false,
+  bodyHadClass: false,
   bodyPaddingRight: "",
 };
 
-const isBrowser = typeof window !== "undefined";
+const isBrowser = () => typeof window !== "undefined";
 
-const lockBodyScroll = () => {
-  if (!isBrowser) {
+const addLockClass = () => {
+  if (!isBrowser()) {
     return;
   }
 
   if (scrollLockState.count === 0) {
-    const htmlEl = document.documentElement;
-    const bodyEl = document.body;
+    const htmlElement = document.documentElement;
+    const bodyElement = document.body;
+    const scrollbarWidth = window.innerWidth - htmlElement.clientWidth;
 
-    scrollLockState.scrollY = window.scrollY;
-    scrollLockState.htmlOverflow = htmlEl.style.overflow;
-    scrollLockState.bodyOverflow = bodyEl.style.overflow;
-    scrollLockState.bodyPaddingRight = bodyEl.style.paddingRight;
+    scrollLockState.htmlHadClass = htmlElement.classList.contains(
+      BODY_LOCK_CLASS
+    );
+    scrollLockState.bodyHadClass = bodyElement.classList.contains(
+      BODY_LOCK_CLASS
+    );
 
-    const scrollbarWidth = window.innerWidth - htmlEl.clientWidth;
+    if (!scrollLockState.htmlHadClass) {
+      htmlElement.classList.add(BODY_LOCK_CLASS);
+    }
+    if (!scrollLockState.bodyHadClass) {
+      bodyElement.classList.add(BODY_LOCK_CLASS);
+    }
 
-    htmlEl.style.overflow = "hidden";
-    bodyEl.style.overflow = "hidden";
+    scrollLockState.bodyPaddingRight = bodyElement.style.paddingRight;
 
     if (scrollbarWidth > 0) {
-      bodyEl.style.paddingRight = `${scrollbarWidth}px`;
+      bodyElement.style.paddingRight = `calc(${scrollLockState.bodyPaddingRight || "0px"} + ${scrollbarWidth}px)`;
     }
   }
 
   scrollLockState.count += 1;
 };
 
-const unlockBodyScroll = () => {
-  if (!isBrowser || scrollLockState.count === 0) {
+const removeLockClass = () => {
+  if (!isBrowser() || scrollLockState.count === 0) {
     return;
   }
 
@@ -54,13 +61,20 @@ const unlockBodyScroll = () => {
     return;
   }
 
-  const htmlEl = document.documentElement;
-  const bodyEl = document.body;
+  const htmlElement = document.documentElement;
+  const bodyElement = document.body;
 
-  htmlEl.style.overflow = scrollLockState.htmlOverflow;
-  bodyEl.style.overflow = scrollLockState.bodyOverflow;
-  bodyEl.style.paddingRight = scrollLockState.bodyPaddingRight;
-  window.scrollTo({ top: scrollLockState.scrollY });
+  if (!scrollLockState.htmlHadClass) {
+    htmlElement.classList.remove(BODY_LOCK_CLASS);
+  }
+  if (!scrollLockState.bodyHadClass) {
+    bodyElement.classList.remove(BODY_LOCK_CLASS);
+  }
+  bodyElement.style.paddingRight = scrollLockState.bodyPaddingRight;
+
+  scrollLockState.htmlHadClass = false;
+  scrollLockState.bodyHadClass = false;
+  scrollLockState.bodyPaddingRight = "";
 };
 
 export const useBodyScrollLock = (active: boolean) => {
@@ -69,10 +83,10 @@ export const useBodyScrollLock = (active: boolean) => {
       return;
     }
 
-    lockBodyScroll();
+    addLockClass();
 
     return () => {
-      unlockBodyScroll();
+      removeLockClass();
     };
   }, [active]);
 };

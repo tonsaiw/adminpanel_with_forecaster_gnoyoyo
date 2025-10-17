@@ -1,14 +1,31 @@
 @import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Mali:wght@400;700&family=Sriracha&display=swap');
+
 
 :root {
-  --background: #ffffff;
+  --background: #f2f2f0;
   --foreground: #171717;
+  --color-primary-500: #503e34;
+  --color-primary-400: #746254;
+  --color-secondary-500: #cd7358;
+  --color-secondary-400: #f08c62;
+  --color-secondary-300: rgba(240, 208, 194, 1);
+  --color-highlight: #efe3dc;
+  --font-primary: "Mali", "Kanit", sans-serif;
 }
+
+
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
+  --color-primary-500: var(--color-primary-500);
+  --color-primary-400: var(--color-primary-400);
+  --color-secondary-500: var(--color-secondary-500);
+  --color-secondary-400: var(--color-secondary-400);
+  --color-secondary-300: var(--color-secondary-300);
+  --color-highlight: var(--color-highlight);
+  --font-sans: var(--font-primary);
   --font-mono: var(--font-geist-mono);
 }
 
@@ -16,11 +33,12 @@
   :root {
     --background: #0a0a0a;
     --foreground: #ededed;
+    --color-highlight: #1f2937;
   }
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-primary);
 }

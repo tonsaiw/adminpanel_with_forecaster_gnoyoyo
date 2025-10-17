@@ -17,8 +17,8 @@ const ForecastPanel = ({ machines }: { machines: Machine[] }) => {
 
   return (
     <div className="space-y-4">
-      <ForecastChart data={daily} isLoading={isLoading} isError={isError} />
       <WeeklySummaryCard summary={weekly} isLoading={loading} />
+      <ForecastChart data={daily} isLoading={isLoading} isError={isError} />
     </div>
   );
 };
@@ -66,24 +66,24 @@ export default function Home() {
 
   return (
     <>
-      <main className="bg-slate-100">
+      <main className="font-sans bg-foreground min-h-screen">
         <div className="mx-auto flex min-h-screen max-w-6xl flex-col gap-8 px-6 py-10">
           <header className="text-center lg:text-left">
-            <h1 className="text-3xl font-semibold text-slate-900 md:text-4xl">
+            <h1 className="text-3xl font-semibold text-primary-500 md:text-4xl">
               TAO BIN Forecaster Dashboard
             </h1>
-            <p className="mt-2 text-slate-600">TAO BIN Forecaster Dashboard</p>
+            <p className="mt-2 text-secondary">TAO BIN Forecaster Dashboard</p>
           </header>
           <div className="relative grid flex-1 gap-6 lg:grid-cols-2">
             <section className="relative overflow-hidden rounded-2xl border border-slate-200 bg-white p-4 shadow-sm sm:p-5 lg:p-6">
               <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-                <h2 className="text-xl font-semibold text-slate-900">
+                <h2 className="text-xl font-semibold text-primary-500">
                   Admin Panel
                 </h2>
                 <button
                   type="button"
                   onClick={handleAddClick}
-                  className="inline-flex items-center justify-center rounded-xl bg-slate-900 px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition-all duration-200 hover:bg-slate-700 active:scale-95 cursor-pointer hover:cursor-pointer"
+                  className="inline-flex items-center justify-center rounded-xl bg-secondary-400 px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition-all duration-200 hover:bg-secondary-500 active:scale-95 cursor-pointer hover:cursor-pointer"
                 >
                   + Add
                 </button>

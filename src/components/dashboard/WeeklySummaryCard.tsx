@@ -56,9 +56,9 @@ export function WeeklySummaryCard({ summary, isLoading }: WeeklySummaryProps) {
 
   return (
     <section className="rounded-xl border bg-white p-6 shadow-sm">
-      <h2 className="mb-4 text-sm font-medium text-gray-500">
+      <h3 className="mb-4 text-xl font-semibold text-primary-500">
         WEEKLY FORECAST SUMMARY
-      </h2>
+      </h3>
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
         <div className="rounded-lg border bg-green-50 p-4 text-center shadow-sm transition-transform duration-200 hover:-translate-y-1">
