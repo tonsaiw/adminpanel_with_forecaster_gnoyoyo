@@ -1,3 +1,5 @@
+import { useBodyScrollLock } from "@/hooks/useBodyScrollLock";
+
 type MachineDeleteConfirmModalProps = {
   open: boolean;
   machineId: string;
@@ -11,6 +13,8 @@ export const MachineDeleteConfirmModal = ({
   onCancel,
   onConfirm,
 }: MachineDeleteConfirmModalProps) => {
+  useBodyScrollLock(open);
+
   if (!open) {
     return null;
   }

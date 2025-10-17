@@ -76,24 +76,6 @@ const ActionCell = ({ machine, onEdit, onDelete }: ActionCellProps) => {
     };
   }, [open, updateMenuPosition]);
 
-  // useEffect(() => {
-  //   if (!open) {
-  //     return;
-  //   }
-  //   const previousOverflow = document.body.style.overflow;
-  //   const previousPaddingRight = document.body.style.paddingRight;
-  //   document.body.style.overflow = "hidden";
-  //   const scrollbarWidth =
-  //     window.innerWidth - document.documentElement.clientWidth;
-  //   if (scrollbarWidth > 0) {
-  //     document.body.style.paddingRight = `${scrollbarWidth}px`;
-  //   }
-  //   return () => {
-  //     document.body.style.overflow = previousOverflow;
-  //     document.body.style.paddingRight = previousPaddingRight;
-  //   };
-  // }, [open]);
-
   const handleEdit = () => {
     setOpen(false);
     onEdit(machine);

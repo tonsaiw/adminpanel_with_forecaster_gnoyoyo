@@ -3,6 +3,7 @@ import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { MachineInput, machineInputSchema } from "@/schemas/machine.schema";
 import { ChevronDown } from "lucide-react";
+import { useBodyScrollLock } from "@/hooks/useBodyScrollLock";
 
 const emptyMachineForm: MachineInput = {
   name: "",
@@ -150,6 +151,8 @@ export const MachineModal = ({
       reset(emptyMachineForm);
     }
   }, [initialValues, open, reset]);
+
+  useBodyScrollLock(open);
 
   if (!open) {
     return null;
