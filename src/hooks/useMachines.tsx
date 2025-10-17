@@ -41,6 +41,7 @@ type MachinesContextValue = {
   addMachine: (input: MachineInput) => void;
   updateMachine: (id: string, input: MachineInput) => void;
   removeMachine: (id: string) => void;
+  isHydrated: boolean;
 };
 
 export const MachinesContext = createContext<MachinesContextValue | undefined>(
@@ -70,13 +71,19 @@ const parseStoredMachines = (raw: string | null): Machine[] => {
 
 export const MachinesProvider = ({ children }: { children: ReactNode }) => {
   const [machines, setMachines] = useState<Machine[]>(seedMachines);
+  const [isHydrated, setIsHydrated] = useState(false);
 
   const isClient = typeof window !== "undefined";
 
   useEffect(() => {
     if (!isClient) return;
     const stored = window.localStorage.getItem(STORAGE_KEY);
-    if (stored) setMachines(parseStoredMachines(stored));
+    if (stored) {
+      setMachines(parseStoredMachines(stored));
+    } else {
+      setMachines(seedMachines);
+    }
+    setIsHydrated(true);
   }, []);
 
   useEffect(() => {
@@ -88,7 +95,7 @@ export const MachinesProvider = ({ children }: { children: ReactNode }) => {
     setMachines((prev) => {
       const id = generateMachineId(prev.length);
       const nextMachine: Machine = { id, ...input };
-      return [...prev, nextMachine];
+      return [nextMachine, ...prev];
     });
   };
 
@@ -110,8 +117,9 @@ export const MachinesProvider = ({ children }: { children: ReactNode }) => {
       addMachine,
       updateMachine,
       removeMachine,
+      isHydrated,
     }),
-    [machines]
+    [machines, isHydrated]
   );
 
   return (

@@ -24,7 +24,6 @@
   --color-secondary-500: var(--color-secondary-500);
   --color-secondary-400: var(--color-secondary-400);
   --color-secondary-300: var(--color-secondary-300);
-  --color-highlight: var(--color-highlight);
   --font-sans: var(--font-primary);
   --font-mono: var(--font-geist-mono);
 }
@@ -41,4 +40,19 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-primary);
+}
+
+@keyframes new-row-highlight {
+  from {
+    background-color: var(--color-secondary-300);
+  }
+
+  to {
+    background-color: #ffffff;
+  }
+}
+
+.new-row-highlight {
+  animation: new-row-highlight 3s ease-out forwards;
+  animation-fill-mode: both;
 }

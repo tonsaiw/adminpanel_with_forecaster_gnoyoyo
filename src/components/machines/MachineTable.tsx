@@ -148,7 +148,11 @@ type MachineTableProps = {
 };
 
 export const MachineTable = ({ onEdit, onDelete }: MachineTableProps) => {
-  const { machines } = useMachines();
+  const { machines, isHydrated } = useMachines();
+  const [highlightedRowId, setHighlightedRowId] = useState<string | null>(null);
+  const highlightTimeoutRef = useRef<number | null>(null);
+  const previousMachineIdsRef = useRef<Set<string>>(new Set());
+  const isInitializedRef = useRef(false);
 
   const columns = useMemo<ColumnDef<Machine>[]>(() => {
     return [
@@ -240,6 +244,61 @@ export const MachineTable = ({ onEdit, onDelete }: MachineTableProps) => {
     getCoreRowModel: getCoreRowModel(),
   });
 
+  useEffect(() => {
+    if (!isHydrated) {
+      return;
+    }
+
+    const currentIds = new Set(machines.map((machine) => machine.id));
+
+    if (!isInitializedRef.current) {
+      previousMachineIdsRef.current = currentIds;
+      isInitializedRef.current = true;
+      return;
+    }
+
+    const newIds: string[] = [];
+
+    machines.forEach((machine) => {
+      if (!previousMachineIdsRef.current.has(machine.id)) {
+        newIds.push(machine.id);
+      }
+    });
+
+    if (newIds.length > 0) {
+      const latestId = newIds[0];
+      setHighlightedRowId(latestId);
+
+      if (typeof window !== "undefined") {
+        if (highlightTimeoutRef.current) {
+          window.clearTimeout(highlightTimeoutRef.current);
+        }
+
+        highlightTimeoutRef.current = window.setTimeout(() => {
+          setHighlightedRowId((current) =>
+            current === latestId ? null : current
+          );
+          highlightTimeoutRef.current = null;
+        }, 3000);
+      }
+    }
+
+    previousMachineIdsRef.current = currentIds;
+  }, [machines, isHydrated]);
+
+  useEffect(() => {
+    return () => {
+      if (typeof window === "undefined") {
+        return;
+      }
+
+      if (highlightTimeoutRef.current) {
+        window.clearTimeout(highlightTimeoutRef.current);
+        highlightTimeoutRef.current = null;
+      }
+    };
+  }, []);
+
   if (machines.length === 0) {
     return (
       <div className="rounded-lg border border-dashed border-slate-300 bg-slate-50 p-12 text-center text-slate-500">
@@ -278,20 +337,31 @@ export const MachineTable = ({ onEdit, onDelete }: MachineTableProps) => {
           </thead>
           <tbody className="divide-y divide-slate-200">
             {table.getRowModel().rows.map((row) => (
-              <tr key={row.id} className=" hover:bg-slate-50">
-                {row.getVisibleCells().map((cell) => (
-                  <td
-                    key={cell.id}
-                    className={`whitespace-nowrap px-4 py-3 text-sm text-slate-700 ${
-                      cell.column.id === "actions"
-                        ? "sticky right-0 z-20 bg-white pl-6 pr-4 text-right shadow-[inset_-8px_0_8px_-8px_rgba(15,23,42,0.08)] whitespace-nowrap"
-                        : "align-top bg-white"
-                    }`}
-                    style={{ width: cell.column.getSize() }}
-                  >
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                  </td>
-                ))}
+              <tr key={row.id} className="hover:bg-slate-50">
+                {row.getVisibleCells().map((cell) => {
+                  const isHighlighted = row.original.id === highlightedRowId;
+                  const backgroundClass = isHighlighted
+                    ? "new-row-highlight"
+                    : "bg-white";
+                  const baseClasses = `whitespace-nowrap px-4 py-3 text-sm text-slate-700 ${backgroundClass}`;
+                  const cellSpecificClasses =
+                    cell.column.id === "actions"
+                      ? "sticky right-0 z-20 pl-6 pr-4 text-right shadow-[inset_-8px_0_8px_-8px_rgba(15,23,42,0.08)] whitespace-nowrap"
+                      : "align-top";
+
+                  return (
+                    <td
+                      key={cell.id}
+                      className={`${baseClasses} ${cellSpecificClasses}`}
+                      style={{ width: cell.column.getSize() }}
+                    >
+                      {flexRender(
+                        cell.column.columnDef.cell,
+                        cell.getContext()
+                      )}
+                    </td>
+                  );
+                })}
               </tr>
             ))}
           </tbody>
