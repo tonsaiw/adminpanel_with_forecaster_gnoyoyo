@@ -61,25 +61,25 @@ export function WeeklySummaryCard({ summary, isLoading }: WeeklySummaryProps) {
       </h3>
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-        <div className="rounded-lg border bg-green-50 p-4 text-center shadow-sm transition-transform duration-200 hover:-translate-y-1">
-          <div className="text-sm font-medium text-green-700">💰 REVENUE</div>
-          <div className="mt-2 text-2xl font-semibold text-green-800">
+        <div className="group relative rounded-2xl border bg-gradient-to-br from-white via-white to-foreground p-6 text-center shadow-lg shadow-secondary-300/50 transition-all duration-300 ease-out hover:-translate-y-2 hover:scale-[1.02] hover:border hover:shadow-lg hover:shadow-secondary-400/60 backdrop-blur-sm">
+          <div className="text-sm font-medium text-secondary-400">REVENUE</div>
+          <div className="mt-2 text-2xl font-semibold text-primary-500">
             {formatTHB(totalRevenue)}
           </div>
           <div className="text-xs text-gray-600">Total 7 days</div>
         </div>
 
-        <div className="rounded-lg border bg-orange-50 p-4 text-center shadow-sm transition-transform duration-200 hover:-translate-y-1">
-          <div className="text-sm font-medium text-orange-700">🏢 RENT</div>
-          <div className="mt-2 text-2xl font-semibold text-orange-800">
+        <div className="group relative rounded-2xl border bg-gradient-to-br from-white via-white to-foreground p-6 text-center shadow-lg shadow-secondary-300/50 transition-all duration-300 ease-out hover:-translate-y-2 hover:scale-[1.02] hover:border hover:shadow-lg hover:shadow-secondary-400/60 backdrop-blur-sm">
+          <div className="text-sm font-medium text-secondary-400">RENT</div>
+          <div className="mt-2 text-2xl font-semibold text-primary-500">
             {formatTHB(totalRent)}
           </div>
           <div className="text-xs text-gray-600">Total cost</div>
         </div>
 
-        <div className="rounded-lg border bg-blue-50 p-4 text-center shadow-sm transition-transform duration-200 hover:-translate-y-1">
-          <div className="text-sm font-medium text-blue-700">⚡ ELECTRIC</div>
-          <div className="mt-2 text-2xl font-semibold text-blue-800">
+        <div className="group relative rounded-2xl border bg-gradient-to-br from-white via-white to-foreground p-6 text-center shadow-lg shadow-secondary-300/50 transition-all duration-300 ease-out hover:-translate-y-2 hover:scale-[1.02] hover:border hover:shadow-lg hover:shadow-secondary-400/60 backdrop-blur-sm">
+          <div className="text-sm font-medium text-secondary-400">ELECTRIC</div>
+          <div className="mt-2 text-2xl font-semibold text-primary-500">
             {formatTHB(totalElectricity)}
           </div>
           <div className="text-xs text-gray-600">
@@ -88,9 +88,9 @@ export function WeeklySummaryCard({ summary, isLoading }: WeeklySummaryProps) {
         </div>
       </div>
 
-      <div className="mt-6 rounded-lg border bg-gradient-to-r from-gray-50 via-white to-gray-50 p-5 shadow-md transition-transform duration-200 hover:-translate-y-1">
-        <div className="mb-2 text-sm font-medium text-gray-700">
-          📊 NET PROFIT/LOSS
+      <div className="group relative mt-6 rounded-xl border border-gray-200 bg-gradient-to-br from-gray-50 via-white to-gray-50 p-6 shadow-lg shadow-secondary-300/50 transition-all duration-300 ease-out hover:-translate-y-2 hover:scale-[1.01] hover:border-gray-300 hover:shadow-lg hover:shadow-secondary-400/60 backdrop-blur-sm">
+        <div className="mb-2 text-sm font-medium text-secondary-400">
+          NET PROFIT/LOSS
         </div>
         <div
           className={`text-3xl font-bold ${
