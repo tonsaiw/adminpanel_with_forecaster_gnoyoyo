@@ -322,8 +322,9 @@ export const MachineTable = ({ onEdit, onDelete }: MachineTableProps) => {
       const snapshot = JSON.stringify(machine);
       currentSnapshots.set(machine.id, snapshot);
 
-      const previousSnapshot =
-        previousMachineSnapshotsRef.current.get(machine.id);
+      const previousSnapshot = previousMachineSnapshotsRef.current.get(
+        machine.id
+      );
       if (previousSnapshot && previousSnapshot !== snapshot) {
         changedIds.push(machine.id);
       }
@@ -366,14 +367,6 @@ export const MachineTable = ({ onEdit, onDelete }: MachineTableProps) => {
     };
   }, []);
 
-  if (machines.length === 0) {
-    return (
-      <div className="rounded-lg border border-dashed border-slate-300 bg-slate-50 p-12 text-center text-slate-500">
-        No machines added yet
-      </div>
-    );
-  }
-
   return (
     <div className="rounded-xl border border-slate-200 bg-white shadow-sm">
       <div className=" w-full overflow-x-auto">
@@ -403,34 +396,45 @@ export const MachineTable = ({ onEdit, onDelete }: MachineTableProps) => {
             ))}
           </thead>
           <tbody className="divide-y divide-slate-200">
-            {table.getRowModel().rows.map((row) => (
-              <tr key={row.id} className="hover:bg-slate-50">
-                {row.getVisibleCells().map((cell) => {
-                  const isHighlighted = row.original.id === highlightedRowId;
-                  const backgroundClass = isHighlighted
-                    ? "new-row-highlight"
-                    : "bg-white";
-                  const baseClasses = `whitespace-nowrap px-4 py-3 text-sm text-slate-700 ${backgroundClass}`;
-                  const cellSpecificClasses =
-                    cell.column.id === "actions"
-                      ? "sticky right-0 z-20 pl-6 pr-4 text-right shadow-[inset_-8px_0_8px_-8px_rgba(15,23,42,0.08)] whitespace-nowrap"
-                      : "align-center";
-
-                  return (
-                    <td
-                      key={cell.id}
-                      className={`${baseClasses} ${cellSpecificClasses}`}
-                      style={{ width: cell.column.getSize() }}
-                    >
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext()
-                      )}
-                    </td>
-                  );
-                })}
+            {machines.length === 0 ? (
+              <tr>
+                <td
+                  colSpan={columns.length}
+                  className="px-4 py-5 text-left text-sm font-semibold text-primary-500"
+                >
+                  No machines added yet
+                </td>
               </tr>
-            ))}
+            ) : (
+              table.getRowModel().rows.map((row) => (
+                <tr key={row.id} className="hover:bg-slate-50">
+                  {row.getVisibleCells().map((cell) => {
+                    const isHighlighted = row.original.id === highlightedRowId;
+                    const backgroundClass = isHighlighted
+                      ? "new-row-highlight"
+                      : "bg-white";
+                    const baseClasses = `whitespace-nowrap px-4 py-3 text-sm text-slate-700 ${backgroundClass}`;
+                    const cellSpecificClasses =
+                      cell.column.id === "actions"
+                        ? "sticky right-0 z-20 pl-6 pr-4 text-right shadow-[inset_-8px_0_8px_-8px_rgba(15,23,42,0.08)] whitespace-nowrap"
+                        : "align-center";
+
+                    return (
+                      <td
+                        key={cell.id}
+                        className={`${baseClasses} ${cellSpecificClasses}`}
+                        style={{ width: cell.column.getSize() }}
+                      >
+                        {flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext()
+                        )}
+                      </td>
+                    );
+                  })}
+                </tr>
+              ))
+            )}
           </tbody>
         </table>
       </div>

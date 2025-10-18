@@ -1,12 +1,10 @@
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { fetchWeather } from "@/lib/weather";
-import {
-  buildDailyForecast,
-  calculateWeeklySummary,
-} from "@/lib/forecast";
+import { buildDailyForecast, calculateWeeklySummary } from "@/lib/forecast";
 import type { Machine } from "@/types/machine";
 import type { DailyForecast, WeeklySummary } from "@/types/forecast";
+import { toast } from "react-toastify";
 
 export function useForecastData(machines: Machine[]) {
   const weatherQuery = useQuery({
@@ -14,6 +12,20 @@ export function useForecastData(machines: Machine[]) {
     queryFn: fetchWeather,
     staleTime: 1000 * 60 * 10,
   });
+
+  useEffect(() => {
+    if (!weatherQuery.isError) {
+      return;
+    }
+
+    const baseMessage = "Failed to fetch weather data";
+    const errorMessage =
+      weatherQuery.error instanceof Error
+        ? `${baseMessage}: ${weatherQuery.error.message}`
+        : baseMessage;
+
+    toast.error(errorMessage);
+  }, [weatherQuery.error, weatherQuery.errorUpdatedAt, weatherQuery.isError]);
 
   const forecastDaily: DailyForecast[] = useMemo(() => {
     if (!weatherQuery.data || !machines.length) {

@@ -23,7 +23,7 @@ export function ForecastChart({
 }) {
   if (isError) {
     return (
-      <div className="rounded-xl border bg-white p-6 text-center text-sm text-red-600 shadow-sm">
+      <div className="rounded-xl border border-slate-200 bg-white p-6 text-center text-sm font-semibold text-red-600 shadow-sm">
         ❌ Error loading forecast data
       </div>
     );
@@ -42,13 +42,8 @@ export function ForecastChart({
 
   if (!data?.length) {
     return (
-      <div className="rounded-xl border bg-white p-6 shadow-sm">
-        <h3 className="mb-4 text-xl font-semibold text-primary-500">
-          7-DAY FORECAST CHART
-        </h3>
-        <div className="rounded-xl border bg-white p-6 text-center text-sm text-gray-500 shadow-sm">
-          No forecast data available.
-        </div>
+      <div className="rounded-xl border border-slate-200 bg-white p-6 text-center text-sm font-semibold text-primary-500 shadow-sm">
+        No forecast data available.
       </div>
     );
   }

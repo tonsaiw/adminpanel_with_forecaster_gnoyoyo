@@ -9,6 +9,7 @@ import { useForecastData } from "@/hooks/useForecastData";
 import { ForecastChart } from "@/components/dashboard/ForecastChart";
 import { ForecastTable } from "@/components/dashboard/ForecastTable";
 import { WeeklySummaryCard } from "@/components/dashboard/WeeklySummaryCard";
+import { ToastContainer, toast } from "react-toastify";
 
 const ForecastPanel = ({ machines }: { machines: Machine[] }) => {
   const { forecast, isLoading, isError } = useForecastData(machines);
@@ -42,8 +43,10 @@ export default function Home() {
     if (editingMachine) {
       updateMachine(editingMachine.id, machine);
       setEditingMachine(null);
+      toast.success(`${editingMachine.id} updated successfully!`);
     } else {
       addMachine(machine);
+      toast.success("Machine added successfully!");
     }
     setModalOpen(false);
   };
@@ -73,12 +76,14 @@ export default function Home() {
     if (deleteTarget) {
       removeMachine(deleteTarget.id);
       setDeleteTarget(null);
+      toast.success(`${deleteTarget.id} deleted successfully!`);
     }
   };
 
   return (
     <>
       <main className="font-sans bg-foreground min-h-screen">
+        <ToastContainer position="top-right" autoClose={3000} />
         <div className="mx-auto flex min-h-screen max-w-6xl flex-col gap-8 px-6 py-10">
           <header className="text-center lg:text-left">
             <h1 className="text-3xl font-semibold text-primary-500 md:text-4xl">
