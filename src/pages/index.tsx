@@ -29,6 +29,13 @@ export default function Home() {
   const [editingMachine, setEditingMachine] = useState<Machine | null>(null);
   const [deleteTarget, setDeleteTarget] = useState<Machine | null>(null);
 
+  const closeActionMenus = () => {
+    if (typeof window === "undefined") {
+      return;
+    }
+    window.dispatchEvent(new Event("machine-table:close-menus"));
+  };
+
   const handleSubmit = (machine: MachineInput) => {
     if (editingMachine) {
       updateMachine(editingMachine.id, machine);
@@ -40,16 +47,19 @@ export default function Home() {
   };
 
   const handleAddClick = () => {
+    closeActionMenus();
     setEditingMachine(null);
     setModalOpen(true);
   };
 
   const handleEdit = (machine: Machine) => {
+    closeActionMenus();
     setEditingMachine(machine);
     setModalOpen(true);
   };
 
   const handleDeleteRequest = (machine: Machine) => {
+    closeActionMenus();
     setDeleteTarget(machine);
   };
 

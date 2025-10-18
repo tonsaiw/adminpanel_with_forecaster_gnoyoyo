@@ -235,6 +235,9 @@ export const MachineModal = ({
               <input
                 type="number"
                 step="0.01"
+                placeholder="Enter profit margin (%)"
+                min={0}
+                max={100}
                 {...register("averageProfitMarginPercentage", {
                   valueAsNumber: true,
                 })}
@@ -243,7 +246,7 @@ export const MachineModal = ({
               {errors.averageProfitMarginPercentage ? (
                 <p className="mt-2 flex items-center gap-1.5 text-xs font-medium text-rose-600">
                   <span className="inline-block h-1 w-1 rounded-full bg-rose-600" />
-                  {errors.averageProfitMarginPercentage.message}
+                  {errors.averageProfitMarginPercentage.message}test
                 </p>
               ) : null}
             </div>

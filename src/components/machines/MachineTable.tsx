@@ -18,6 +18,7 @@ type ActionCellProps = {
 
 const MENU_WIDTH_PX = 144;
 const MENU_OFFSET_Y = 8;
+const CLOSE_MENUS_EVENT = "machine-table:close-menus";
 
 const ActionCell = ({ machine, onEdit, onDelete }: ActionCellProps) => {
   const [open, setOpen] = useState(false);
@@ -82,6 +83,22 @@ const ActionCell = ({ machine, onEdit, onDelete }: ActionCellProps) => {
       window.removeEventListener("scroll", handleScroll, true);
     };
   }, [open, updateMenuPosition]);
+
+  useEffect(() => {
+    if (typeof window === "undefined") {
+      return;
+    }
+
+    const handleCloseMenus = () => {
+      setOpen(false);
+    };
+
+    window.addEventListener(CLOSE_MENUS_EVENT, handleCloseMenus);
+
+    return () => {
+      window.removeEventListener(CLOSE_MENUS_EVENT, handleCloseMenus);
+    };
+  }, []);
 
   useBodyScrollLock(open);
 
@@ -201,8 +218,14 @@ export const MachineTable = ({ onEdit, onDelete }: MachineTableProps) => {
         header: "Avg Profit Margin",
         accessorKey: "averageProfitMarginPercentage",
         size: 170,
+        // cell: (info) => {
+        //   const percent = (info.getValue<number>() * 100).toFixed(0);
+        //   return (
+        //     <span className="font-semibold text-emerald-600">{percent}%</span>
+        //   );
+        // },
         cell: (info) => {
-          const percent = (info.getValue<number>() * 100).toFixed(0);
+          const percent = info.getValue<number>().toFixed(0);
           return (
             <span className="font-semibold text-emerald-600">{percent}%</span>
           );
@@ -278,7 +301,10 @@ export const MachineTable = ({ onEdit, onDelete }: MachineTableProps) => {
 
     if (newIds.length > 0) {
       targetId = newIds[0];
-    } else if (currentTopId && currentTopId !== previousTopMachineIdRef.current) {
+    } else if (
+      currentTopId &&
+      currentTopId !== previousTopMachineIdRef.current
+    ) {
       targetId = currentTopId;
     }
 
