@@ -177,6 +177,24 @@ export const MachineTable = ({ onEdit, onDelete }: MachineTableProps) => {
   const previousMachineIdsRef = useRef<Set<string>>(new Set());
   const isInitializedRef = useRef(false);
   const previousTopMachineIdRef = useRef<string | null>(null);
+  const previousMachineSnapshotsRef = useRef<Map<string, string>>(new Map());
+
+  const highlightRow = useCallback((targetId: string) => {
+    setHighlightedRowId(targetId);
+
+    if (typeof window === "undefined") {
+      return;
+    }
+
+    if (highlightTimeoutRef.current) {
+      window.clearTimeout(highlightTimeoutRef.current);
+    }
+
+    highlightTimeoutRef.current = window.setTimeout(() => {
+      setHighlightedRowId((current) => (current === targetId ? null : current));
+      highlightTimeoutRef.current = null;
+    }, 3000);
+  }, []);
 
   const columns = useMemo<ColumnDef<Machine>[]>(() => {
     return [
@@ -285,15 +303,29 @@ export const MachineTable = ({ onEdit, onDelete }: MachineTableProps) => {
     if (!isInitializedRef.current) {
       previousMachineIdsRef.current = currentIds;
       previousTopMachineIdRef.current = currentTopId;
+      previousMachineSnapshotsRef.current = new Map(
+        machines.map((machine) => [machine.id, JSON.stringify(machine)])
+      );
       isInitializedRef.current = true;
       return;
     }
 
     const newIds: string[] = [];
+    const changedIds: string[] = [];
+    const currentSnapshots = new Map<string, string>();
 
     machines.forEach((machine) => {
       if (!previousMachineIdsRef.current.has(machine.id)) {
         newIds.push(machine.id);
+      }
+
+      const snapshot = JSON.stringify(machine);
+      currentSnapshots.set(machine.id, snapshot);
+
+      const previousSnapshot =
+        previousMachineSnapshotsRef.current.get(machine.id);
+      if (previousSnapshot && previousSnapshot !== snapshot) {
+        changedIds.push(machine.id);
       }
     });
 
@@ -301,6 +333,8 @@ export const MachineTable = ({ onEdit, onDelete }: MachineTableProps) => {
 
     if (newIds.length > 0) {
       targetId = newIds[0];
+    } else if (changedIds.length > 0) {
+      targetId = changedIds[0];
     } else if (
       currentTopId &&
       currentTopId !== previousTopMachineIdRef.current &&
@@ -311,25 +345,13 @@ export const MachineTable = ({ onEdit, onDelete }: MachineTableProps) => {
     }
 
     if (targetId) {
-      setHighlightedRowId(targetId);
-
-      if (typeof window !== "undefined") {
-        if (highlightTimeoutRef.current) {
-          window.clearTimeout(highlightTimeoutRef.current);
-        }
-
-        highlightTimeoutRef.current = window.setTimeout(() => {
-          setHighlightedRowId((current) =>
-            current === targetId ? null : current
-          );
-          highlightTimeoutRef.current = null;
-        }, 3000);
-      }
+      highlightRow(targetId);
     }
 
     previousMachineIdsRef.current = currentIds;
     previousTopMachineIdRef.current = currentTopId;
-  }, [machines, isHydrated]);
+    previousMachineSnapshotsRef.current = currentSnapshots;
+  }, [machines, isHydrated, highlightRow]);
 
   useEffect(() => {
     return () => {
