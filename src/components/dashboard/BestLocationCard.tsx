@@ -38,6 +38,9 @@ export function BestLocationCard() {
         <h3 className="text-xl font-semibold text-primary-500 tracking-wide">
           BEST SELLING LOCATION
         </h3>
+        <span>
+          <Trophy size={30} className="text-amber-400 drop-shadow-sm" />
+        </span>
       </div>
 
       <div className="mt-5 flex flex-col items-center gap-2">

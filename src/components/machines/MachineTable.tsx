@@ -362,10 +362,10 @@ export const MachineTable = ({ onEdit, onDelete }: MachineTableProps) => {
                 {headerGroup.headers.map((header) => (
                   <th
                     key={header.id}
-                    className={`whitespace-nowrap px-4 py-3 text-left text-[11px] font-semibold uppercase tracking-wide text-slate-500 ${
+                    className={`whitespace-nowrap px-4 py-3 text-left text-[11px] font-semibold uppercase tracking-wide text-primary-500 ${
                       header.column.id === "actions"
-                        ? "sticky right-0 z-10 bg-slate-50 pl-6 pr-4 shadow-[inset_-8px_0_8px_-8px_rgba(15,23,42,0.12)]"
-                        : "bg-slate-50"
+                        ? "sticky right-0 z-10 bg-foreground pl-6 pr-4 shadow-[inset_-8px_0_8px_-8px_rgba(15,23,42,0.12)]"
+                        : "bg-foreground"
                     }`}
                     style={{ width: header.getSize() }}
                   >
@@ -392,7 +392,7 @@ export const MachineTable = ({ onEdit, onDelete }: MachineTableProps) => {
                   const cellSpecificClasses =
                     cell.column.id === "actions"
                       ? "sticky right-0 z-20 pl-6 pr-4 text-right shadow-[inset_-8px_0_8px_-8px_rgba(15,23,42,0.08)] whitespace-nowrap"
-                      : "align-top";
+                      : "align-center";
 
                   return (
                     <td

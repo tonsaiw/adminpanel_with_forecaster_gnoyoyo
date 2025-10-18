@@ -17,8 +17,8 @@ export function ForecastTable({ data }: ForecastTableProps) {
       </h3>
       <div className="min-w-0 overflow-x-auto">
         <table className="min-w-full divide-y divide-slate-200 text-sm">
-          <thead className="bg-slate-50 text-left">
-            <tr className="text-xs uppercase tracking-wide text-slate-500">
+          <thead className="bg-foreground text-left">
+            <tr className="text-xs font-semibold tracking-wide text-primary-500">
               <th className="whitespace-nowrap px-4 py-3">Date</th>
               <th className="whitespace-nowrap px-4 py-3 text-right">
                 Min Temp (°C)
@@ -40,7 +40,7 @@ export function ForecastTable({ data }: ForecastTableProps) {
           <tbody className="divide-y divide-slate-200">
             {data.map((day) => (
               <tr key={day.date} className="text-slate-700">
-                <td className="whitespace-nowrap px-4 py-3 font-medium">
+                <td className="whitespace-nowrap px-4 py-3 text-sm">
                   {day.date}
                 </td>
                 <td className="whitespace-nowrap px-4 py-3 text-left">
@@ -53,7 +53,10 @@ export function ForecastTable({ data }: ForecastTableProps) {
                   {day.avgTemp.toFixed(1)}
                 </td>
                 <td className="whitespace-nowrap px-4 py-3 text-left text-slate-900">
-                  {formatTHB(day.electricityCost)}
+                  <span className="text-xs font-medium text-slate-400">฿ </span>
+                  <span className="font-semibold text-slate-800">
+                    {day.electricityCost}
+                  </span>
                 </td>
                 <td
                   className={`whitespace-nowrap px-4 py-3 text-left font-semibold ${
