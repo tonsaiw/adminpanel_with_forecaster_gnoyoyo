@@ -10,13 +10,14 @@ import {
 } from "recharts";
 import Skeleton from "react-loading-skeleton";
 import { formatTHB } from "@/utils/number";
+import type { DailyForecast } from "@/types/forecast";
 
 export function ForecastChart({
   data,
   isLoading,
   isError,
 }: {
-  data: { date: string; electricityCost: number; profitOrLoss: number }[];
+  data: DailyForecast[];
   isLoading: boolean;
   isError: boolean;
 }) {
@@ -32,7 +33,7 @@ export function ForecastChart({
     return (
       <div className="rounded-xl border bg-white p-6 shadow-sm">
         <h3 className="mb-4 text-xl font-semibold text-primary-500">
-          7-DAY FORECAST
+          7-DAY FORECAST CHART
         </h3>
         <Skeleton height={280} borderRadius="0.75rem" />
       </div>
@@ -43,7 +44,7 @@ export function ForecastChart({
     return (
       <div className="rounded-xl border bg-white p-6 shadow-sm">
         <h3 className="mb-4 text-xl font-semibold text-primary-500">
-          7-DAY FORECAST
+          7-DAY FORECAST CHART
         </h3>
         <div className="rounded-xl border bg-white p-6 text-center text-sm text-gray-500 shadow-sm">
           No forecast data available.

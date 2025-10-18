@@ -7,6 +7,7 @@ import { useMachines } from "@/hooks/useMachines";
 import type { Machine, MachineInput } from "@/schemas/machine.schema";
 import { useForecastData } from "@/hooks/useForecastData";
 import { ForecastChart } from "@/components/dashboard/ForecastChart";
+import { ForecastTable } from "@/components/dashboard/ForecastTable";
 import { WeeklySummaryCard } from "@/components/dashboard/WeeklySummaryCard";
 
 const ForecastPanel = ({ machines }: { machines: Machine[] }) => {
@@ -19,6 +20,7 @@ const ForecastPanel = ({ machines }: { machines: Machine[] }) => {
     <div className="space-y-4">
       <WeeklySummaryCard summary={weekly} isLoading={loading} />
       <ForecastChart data={daily} isLoading={isLoading} isError={isError} />
+      <ForecastTable data={daily} />
     </div>
   );
 };

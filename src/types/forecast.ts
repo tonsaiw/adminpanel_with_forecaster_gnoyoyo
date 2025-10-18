@@ -1,5 +1,7 @@
 export type DailyForecast = {
   date: string;
+  minTemp: number;
+  maxTemp: number;
   avgTemp: number;
   electricityCost: number;
   profitOrLoss: number;

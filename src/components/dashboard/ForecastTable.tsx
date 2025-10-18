@@ -1,0 +1,72 @@
+import { formatTHB } from "@/utils/number";
+import type { DailyForecast } from "@/types/forecast";
+
+type ForecastTableProps = {
+  data: DailyForecast[];
+};
+
+export function ForecastTable({ data }: ForecastTableProps) {
+  if (!data.length) {
+    return null;
+  }
+
+  return (
+    <div className="rounded-xl border bg-white p-6 shadow-sm">
+      <h3 className="mb-4 text-xl font-semibold text-primary-500">
+        7-DAY FORECAST TABLE
+      </h3>
+      <div className="overflow-x-auto">
+        <table className="min-w-full divide-y divide-slate-200 text-sm">
+          <thead className="bg-slate-50 text-left">
+            <tr className="text-xs uppercase tracking-wide text-slate-500">
+              <th className="whitespace-nowrap px-4 py-3">Date</th>
+              <th className="whitespace-nowrap px-4 py-3 text-right">
+                Min Temp (°C)
+              </th>
+              <th className="whitespace-nowrap px-4 py-3 text-right">
+                Max Temp (°C)
+              </th>
+              <th className="whitespace-nowrap px-4 py-3 text-right">
+                Avg Temp (°C)
+              </th>
+              <th className="whitespace-nowrap px-4 py-3 text-right">
+                Electricity Cost
+              </th>
+              <th className="whitespace-nowrap px-4 py-3 text-right">
+                Profit / Loss
+              </th>
+            </tr>
+          </thead>
+          <tbody className="divide-y divide-slate-200">
+            {data.map((day) => (
+              <tr key={day.date} className="text-slate-700">
+                <td className="whitespace-nowrap px-4 py-3 font-medium">
+                  {day.date}
+                </td>
+                <td className="whitespace-nowrap px-4 py-3 text-left">
+                  {day.minTemp.toFixed(1)}
+                </td>
+                <td className="whitespace-nowrap px-4 py-3 text-left">
+                  {day.maxTemp.toFixed(1)}
+                </td>
+                <td className="whitespace-nowrap px-4 py-3 text-left">
+                  {day.avgTemp.toFixed(1)}
+                </td>
+                <td className="whitespace-nowrap px-4 py-3 text-left text-slate-900">
+                  {formatTHB(day.electricityCost)}
+                </td>
+                <td
+                  className={`whitespace-nowrap px-4 py-3 text-left font-semibold ${
+                    day.profitOrLoss >= 0 ? "text-emerald-600" : "text-rose-600"
+                  }`}
+                >
+                  {formatTHB(day.profitOrLoss)}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  );
+}
