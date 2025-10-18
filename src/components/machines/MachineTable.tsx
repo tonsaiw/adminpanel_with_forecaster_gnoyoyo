@@ -303,7 +303,9 @@ export const MachineTable = ({ onEdit, onDelete }: MachineTableProps) => {
       targetId = newIds[0];
     } else if (
       currentTopId &&
-      currentTopId !== previousTopMachineIdRef.current
+      currentTopId !== previousTopMachineIdRef.current &&
+      previousTopMachineIdRef.current &&
+      currentIds.has(previousTopMachineIdRef.current)
     ) {
       targetId = currentTopId;
     }
@@ -345,7 +347,7 @@ export const MachineTable = ({ onEdit, onDelete }: MachineTableProps) => {
   if (machines.length === 0) {
     return (
       <div className="rounded-lg border border-dashed border-slate-300 bg-slate-50 p-12 text-center text-slate-500">
-        There is no information about the machine yet. Please add a new machine.
+        No machines added yet
       </div>
     );
   }
