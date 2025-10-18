@@ -218,6 +218,7 @@ export const MachineModal = ({
               </label>
               <input
                 type="number"
+                placeholder="Enter Expected Sales (THB)"
                 {...register("expectedSalesPerDay", { valueAsNumber: true })}
                 className="w-full rounded-xl border-2 border-secondary-300 bg-white px-4 py-2.5 text-sm text-slate-900 shadow-sm transition-all duration-200 placeholder:text-slate-400 hover:border-secondary-400 focus:border-secondary-500 focus:outline-none focus:ring-4 focus:ring-secondary-300"
               />
@@ -235,7 +236,7 @@ export const MachineModal = ({
               <input
                 type="number"
                 step="0.01"
-                placeholder="Enter profit margin (%)"
+                placeholder="Enter Profit Margin (%)"
                 min={0}
                 max={100}
                 {...register("averageProfitMarginPercentage", {
@@ -246,7 +247,7 @@ export const MachineModal = ({
               {errors.averageProfitMarginPercentage ? (
                 <p className="mt-2 flex items-center gap-1.5 text-xs font-medium text-rose-600">
                   <span className="inline-block h-1 w-1 rounded-full bg-rose-600" />
-                  {errors.averageProfitMarginPercentage.message}test
+                  {errors.averageProfitMarginPercentage.message}
                 </p>
               ) : null}
             </div>
@@ -256,6 +257,7 @@ export const MachineModal = ({
               </label>
               <input
                 type="number"
+                placeholder="Enter Rent Cost (THB)"
                 {...register("rentCostPerDay", { valueAsNumber: true })}
                 className="w-full rounded-xl border-2 border-secondary-300 bg-white px-4 py-2.5 text-sm text-slate-900 shadow-sm transition-all duration-200 placeholder:text-slate-400 hover:border-secondary-400 focus:border-secondary-500 focus:outline-none focus:ring-4 focus:ring-secondary-300"
               />
@@ -268,10 +270,11 @@ export const MachineModal = ({
             </div>
             <div>
               <label className="mb-1.5 block text-sm font-semibold text-primary-400">
-                Electric Cost Per Temp Per Day
+                Electric Cost Per Temp Per Day (THB/°C)
               </label>
               <input
                 type="number"
+                placeholder="Enter Electric Cost (THB/°C)"
                 {...register("electricCostPerTempPerDay", {
                   valueAsNumber: true,
                 })}
