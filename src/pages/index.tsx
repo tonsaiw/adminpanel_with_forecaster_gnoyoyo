@@ -89,7 +89,7 @@ export default function Home() {
             </p>
           </header>
           <div className="relative grid flex-1 gap-6 lg:grid-cols-2">
-            <section className="relative overflow-hidden rounded-2xl border border-slate-200 bg-white p-4 shadow-sm sm:p-5 lg:p-6">
+            <section className="relative min-w-0 overflow-hidden rounded-2xl border border-slate-200 bg-white p-4 shadow-sm sm:p-5 lg:p-6">
               <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                 <h2 className="text-xl font-semibold text-primary-500">
                   Admin Panel
@@ -109,7 +109,7 @@ export default function Home() {
                 />
               </div>
             </section>
-            <section className="space-y-4">
+            <section className="min-w-0 space-y-4">
               <BestLocationCard />
               <ForecastPanel machines={machines} />
             </section>

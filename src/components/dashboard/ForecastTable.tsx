@@ -11,11 +11,11 @@ export function ForecastTable({ data }: ForecastTableProps) {
   }
 
   return (
-    <div className="rounded-xl border bg-white p-6 shadow-sm">
+    <div className="min-w-0 rounded-xl border bg-white p-6 shadow-sm">
       <h3 className="mb-4 text-xl font-semibold text-primary-500">
         7-DAY FORECAST TABLE
       </h3>
-      <div className="overflow-x-auto">
+      <div className="min-w-0 overflow-x-auto">
         <table className="min-w-full divide-y divide-slate-200 text-sm">
           <thead className="bg-slate-50 text-left">
             <tr className="text-xs uppercase tracking-wide text-slate-500">
